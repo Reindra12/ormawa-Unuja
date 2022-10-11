@@ -18,4 +18,13 @@
     <string name="email_is_not_valid">Email is not valid</string>
     <string name="button_text_ok">Ok</string>
     <string name="hint_login_email_edit_text">Email</string>
+    <string name="hint_register_email">Email</string>
+    <string name="hint_register_password">Password</string>
+    <string name="button_text_register">Create Account</string>
+    <string name="hint_register_name">Name</string>
+    <string name="header_register">Sign Up</string>
+    <string name="header_desc_register">create an account to get all the feature of this app</string>
+    <string name="button_text_back">Back</string>
+    <string name="error_name_not_valid">Name is not valid</string>
+    <string name="error_email_not_valid">Email is not valid</string>
 </resources>
