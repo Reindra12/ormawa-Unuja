@@ -3,6 +3,7 @@ package com.reindrairawan.organisasimahasiswa.presentation.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -18,9 +19,11 @@ import com.reindrairawan.organisasimahasiswa.infra.utils.SharedPrefs
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.isEmail
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showGenericAlertDialog
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showToast
+import com.reindrairawan.organisasimahasiswa.presentation.fuzzy.Prediksi_Activity
 import com.reindrairawan.organisasimahasiswa.presentation.main.MainActivity
+import com.reindrairawan.organisasimahasiswa.presentation.register.RegisterActivity
 import dagger.hilt.android.AndroidEntryPoint
-import io.sentry.Sentry
+
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
@@ -34,15 +37,26 @@ class LoginActivity : AppCompatActivity() {
     @Inject
     lateinit var pref: SharedPrefs
 
+    private val openRegisterActivity =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                goToMainActivity()
+            }
+
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-        Sentry.captureMessage("testing SDK setup")
+        gotoRegisterActivity()
 
         login()
         observe()
+        binding.prediksiButton.setOnClickListener {
+            openRegisterActivity.launch(Intent(this@LoginActivity, Prediksi_Activity::class.java))
+        }
 
     }
 
@@ -62,6 +76,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleIsLoading(isLoading: Boolean) {
+        binding.registerButton.isEnabled = !isLoading
         binding.loginButton.isEnabled = !isLoading
         binding.loadingProgressBar.isIndeterminate = isLoading
         if (!isLoading) {
@@ -71,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleErrorLogin(rawResponse: WrappedResponse<LoginResponse>) {
         showGenericAlertDialog(rawResponse.message)
-        Log.d("error", "handleErrorLogin: "+rawResponse.message)
+        Log.d("error", "handleErrorLogin: " + rawResponse.message)
     }
 
     private fun handleSuccessLogin(loginEntity: LoginEntity) {
@@ -83,6 +98,12 @@ class LoginActivity : AppCompatActivity() {
     private fun goToMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))
         finish()
+    }
+
+    private fun gotoRegisterActivity() {
+        binding.registerButton.setOnClickListener {
+            openRegisterActivity.launch(Intent(this@LoginActivity, RegisterActivity::class.java))
+        }
     }
 
 

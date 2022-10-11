@@ -13,9 +13,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.OrganisasiMahasiswa"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".presentation.fuzzy.Prediksi_Activity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".presentation.register.RegisterActivity"
+            android:exported="false"
+            android:theme="@style/Theme.OrganisasiMahasiswa.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".presentation.main.MainActivity"
             android:exported="false">
@@ -25,8 +40,8 @@
         </activity>
         <activity
             android:name=".presentation.login.LoginActivity"
-            android:theme="@style/Theme.OrganisasiMahasiswa.NoActionBar"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.OrganisasiMahasiswa.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -37,14 +52,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
-        <meta-data android:name="io.sentry.dsn" android:value="https://4b9bf118fa414d499fa086b7edfd7a35@o4503942652035072.ingest.sentry.io/4503942653411328" />
-        <!-- Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
-           We recommend adjusting this value in production. -->
-        <meta-data android:name="io.sentry.traces.sample-rate" android:value="1.0" />
-        <!-- Enable user interaction tracing to capture transactions for various UI events (such as clicks or scrolls). -->
-        <meta-data android:name="io.sentry.traces.user-interaction.enable" android:value="true" />
-
     </application>
 
 </manifest>
