@@ -19,7 +19,7 @@ import com.reindrairawan.organisasimahasiswa.infra.utils.SharedPrefs
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.isEmail
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showGenericAlertDialog
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showToast
-import com.reindrairawan.organisasimahasiswa.presentation.fuzzy.Prediksi_Activity
+//import com.reindrairawan.organisasimahasiswa.presentation.fuzzy.Prediksi_Activity
 import com.reindrairawan.organisasimahasiswa.presentation.main.MainActivity
 import com.reindrairawan.organisasimahasiswa.presentation.register.RegisterActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,10 +54,10 @@ class LoginActivity : AppCompatActivity() {
 
         login()
         observe()
-        binding.prediksiButton.setOnClickListener {
-            openRegisterActivity.launch(Intent(this@LoginActivity, Prediksi_Activity::class.java))
-        }
-
+//        binding.prediksiButton.setOnClickListener {
+//            openRegisterActivity.launch(Intent(this@LoginActivity, Prediksi_Activity::class.java))
+//        }
+//
     }
 
     private fun observe() {
@@ -85,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleErrorLogin(rawResponse: WrappedResponse<LoginResponse>) {
-        showGenericAlertDialog(rawResponse.message)
+        showGenericAlertDialog(rawResponse.errors)
         Log.d("error", "handleErrorLogin: " + rawResponse.message)
     }
 

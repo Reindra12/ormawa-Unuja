@@ -87,11 +87,29 @@
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:id="@+id/password_confirm_input"
+            app:errorEnabled="true"
+            app:passwordToggleEnabled="true"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:id="@+id/password_confirm_edit_text"
+                android:inputType="textPassword"
+                android:hint="@string/hint_register_password_confirm"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/register_button"
             android:layout_width="match_parent"
             android:text="@string/button_text_register"
             android:layout_height="wrap_content"/>
+
+
     </LinearLayout>
 
 </ScrollView>

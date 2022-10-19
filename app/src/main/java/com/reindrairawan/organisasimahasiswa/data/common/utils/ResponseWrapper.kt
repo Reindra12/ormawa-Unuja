@@ -14,7 +14,7 @@ data class WrappedResponse<T>(
     var code: Int,
     @SerializedName("status") var status: Boolean,
     @SerializedName("message") var message: String,
-    @SerializedName("errors") var errors : T? = null,
-//    @SerializedName("errors") var errors: String,
+//    @SerializedName("errors") var errors : T? = null,
+    @SerializedName("errors") var errors: String,
     @SerializedName("data") var data: T? = null,
 )
