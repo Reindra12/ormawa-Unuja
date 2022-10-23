@@ -49,6 +49,7 @@
             android:id="@+id/name_input"
             app:errorEnabled="true"
             app:boxBackgroundColor="@android:color/transparent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -62,6 +63,7 @@
             android:id="@+id/email_input"
             app:errorEnabled="true"
             app:boxBackgroundColor="@android:color/transparent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -78,6 +80,7 @@
             app:errorEnabled="true"
             app:passwordToggleEnabled="true"
             app:boxBackgroundColor="@android:color/transparent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -94,6 +97,7 @@
             app:errorEnabled="true"
             app:passwordToggleEnabled="true"
             app:boxBackgroundColor="@android:color/transparent"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
