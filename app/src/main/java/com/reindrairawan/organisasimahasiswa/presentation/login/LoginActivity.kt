@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-        gotoRegisterActivity()
+//        gotoRegisterActivity()
 
         login()
         observe()
@@ -76,7 +76,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleIsLoading(isLoading: Boolean) {
-        binding.registerButton.isEnabled = !isLoading
+//        binding.registerButton.isEnabled = !isLoading
         binding.loginButton.isEnabled = !isLoading
         binding.loadingProgressBar.isIndeterminate = isLoading
         if (!isLoading) {
@@ -100,11 +100,11 @@ class LoginActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun gotoRegisterActivity() {
-        binding.registerButton.setOnClickListener {
-            openRegisterActivity.launch(Intent(this@LoginActivity, RegisterActivity::class.java))
-        }
-    }
+//    private fun gotoRegisterActivity() {
+//        binding.registerButton.setOnClickListener {
+//            openRegisterActivity.launch(Intent(this@LoginActivity, RegisterActivity::class.java))
+//        }
+//    }
 
 
     private fun login() {

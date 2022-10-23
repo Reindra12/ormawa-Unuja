@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.reindrairawan.organisasimahasiswa.R
 import com.reindrairawan.organisasimahasiswa.infra.utils.SharedPrefs
-import com.reindrairawan.organisasimahasiswa.presentation.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun goToLoginActivity() {
-        startActivity(Intent(this, LoginActivity::class.java))
+        startActivity(Intent(this, IntroActivity::class.java))
         finish()
     }
 
