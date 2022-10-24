@@ -8,11 +8,20 @@ class SharedPrefs(private val context: Context) {
     companion object {
         private const val PREF = "Ormawa"
         private const val PREF_TOKEN = "user_Token"
+        private const val PREF_USERNAME = "username"
 
     }
 
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
+
+    fun saveUsername(username: String){
+        put(PREF_USERNAME, username)
+    }
+
+    fun getUsername(): String{
+        return get(PREF_USERNAME, String::class.java)
+    }
 
     fun saveToken(token: String) {
         put(PREF_TOKEN, token)

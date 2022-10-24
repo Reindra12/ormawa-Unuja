@@ -29,4 +29,5 @@
     <string name="error_email_not_valid">Email is not valid</string>
     <string name="hint_register_password_confirm">Password Confirmation</string>
     <string name="dashboard">Home</string>
+    <string name="categories">Event</string>
 </resources>
