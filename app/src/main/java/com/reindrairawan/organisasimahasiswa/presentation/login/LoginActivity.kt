@@ -20,8 +20,7 @@ import com.reindrairawan.organisasimahasiswa.presentation.common.extension.isEma
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showGenericAlertDialog
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showToast
 //import com.reindrairawan.organisasimahasiswa.presentation.fuzzy.Prediksi_Activity
-import com.reindrairawan.organisasimahasiswa.presentation.main.MainActivity
-import com.reindrairawan.organisasimahasiswa.presentation.register.RegisterActivity
+import com.reindrairawan.organisasimahasiswa.presentation.dashboard.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 import kotlinx.coroutines.flow.launchIn
@@ -50,14 +49,10 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-//        gotoRegisterActivity()
 
         login()
         observe()
-//        binding.prediksiButton.setOnClickListener {
-//            openRegisterActivity.launch(Intent(this@LoginActivity, Prediksi_Activity::class.java))
-//        }
-//
+
     }
 
     private fun observe() {
@@ -91,6 +86,8 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleSuccessLogin(loginEntity: LoginEntity) {
         pref.saveToken(loginEntity.token)
+        pref.saveUsername(loginEntity.name)
+
         goToMainActivity()
 
     }
