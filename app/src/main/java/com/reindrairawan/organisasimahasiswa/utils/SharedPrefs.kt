@@ -2,16 +2,20 @@ package com.reindrairawan.organisasimahasiswa.infra.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.reindrairawan.organisasimahasiswa.data.dashboard.repository.CategoriesRepositoryImpl
+import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
-class SharedPrefs(private val context: Context) {
+class SharedPrefs (private val context: Context) {
     companion object {
         private const val PREF = "Ormawa"
         private const val PREF_TOKEN = "user_Token"
         private const val PREF_USERNAME = "username"
 
     }
-
+    fun init(context: Context) {
+        context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
+    }
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
 

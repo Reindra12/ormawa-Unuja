@@ -2,18 +2,20 @@ package com.reindrairawan.organisasimahasiswa.presentation.dashboard
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.reindrairawan.organisasimahasiswa.databinding.ActivityMainBinding
 import com.reindrairawan.organisasimahasiswa.domain.dashboard.category.entity.CategoriesEntity
 import com.reindrairawan.organisasimahasiswa.infra.utils.SharedPrefs
-import com.reindrairawan.organisasimahasiswa.presentation.common.extension.gone
-import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showToast
-import com.reindrairawan.organisasimahasiswa.presentation.common.extension.visible
+import com.reindrairawan.organisasimahasiswa.presentation.common.extension.*
 import com.reindrairawan.organisasimahasiswa.presentation.main.IntroActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -41,8 +43,23 @@ class MainActivity : AppCompatActivity() {
         viewModel.fetchCategories()
 
 
-        binding.welcomeTextview.text = "Selamat Datang "+prefs.getUsername()
+        binding.welcomeTextview.text = "Selamat Datang " + prefs.getUsername()
+        showToast(prefs.getToken())
+
+        addCategory()
     }
+
+    private fun addCategory() {
+        binding.cameraFloat.setOnClickListener {
+            AwesomeDialogMessage(this, "Camera", "Gallery"){
+                Log.d("TAG", "addCategory: "+it)
+            }
+
+
+        }
+
+    }
+
 
     private fun observe() {
         observeState()
@@ -82,6 +99,7 @@ class MainActivity : AppCompatActivity() {
             is DashboardState.Init -> Unit
         }
     }
+
 
     private fun handleLoading(isLoading: Boolean) {
         if (isLoading) {

@@ -30,4 +30,6 @@
     <string name="hint_register_password_confirm">Password Confirmation</string>
     <string name="dashboard">Home</string>
     <string name="categories">Event</string>
+    <string name="dialog_camera">Pilih Gambar</string>
+    <string name="dialog_body_camera">Camera yang digunakan merupakan versi CameraX</string>
 </resources>

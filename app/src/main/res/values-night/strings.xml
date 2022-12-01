@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="dialog_camera">Pilih Gambar</string>
+    <string name="dialog_body_camera">Camera yang digunakan merupakan versi CameraX</string>
+</resources>

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.reindrairawan.organisasimahasiswa.BuildConfig
 import com.reindrairawan.organisasimahasiswa.databinding.ItemCategoryBinding
 import com.reindrairawan.organisasimahasiswa.domain.dashboard.category.entity.CategoriesEntity
 
@@ -39,7 +40,7 @@ class DashboardAdapter(private val categories: MutableList<CategoriesEntity>) :
         fun bind(categories: CategoriesEntity) {
             itemBinding.categoriesNameTextview.text = categories.name
             Glide.with(itemView.context)
-                .load("http://192.168.0.182:8000/"+categories.path)
+                .load(BuildConfig.BASE_ASSETS+"jenis_kegiatan/"+categories.path)
                 .into(itemBinding.categoriesImageview)
 
             itemBinding.root.setOnClickListener {

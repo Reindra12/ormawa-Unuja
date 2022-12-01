@@ -8,6 +8,7 @@ import com.reindrairawan.organisasimahasiswa.data.login.remote.dto.LoginResponse
 import com.reindrairawan.organisasimahasiswa.domain.common.base.BaseResult
 import com.reindrairawan.organisasimahasiswa.domain.login.entity.LoginEntity
 import com.reindrairawan.organisasimahasiswa.domain.login.usecase.LoginUseCase
+import com.reindrairawan.organisasimahasiswa.presentation.common.extension.AwesomeDialogMessage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 
@@ -58,6 +59,7 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
                 }
         }
     }
+
 }
 
 sealed class LoginActivityState {

@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class CategoriesResponse(
     @SerializedName("id") var id: Int,
-    @SerializedName("name") var name: String,
-    @SerializedName("path") var path: String
+    @SerializedName("nama_jenis_kegiatan") var name: String,
+    @SerializedName("gambar") var path: String
 )

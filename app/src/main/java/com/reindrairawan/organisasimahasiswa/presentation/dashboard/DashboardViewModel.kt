@@ -1,8 +1,10 @@
 package com.reindrairawan.organisasimahasiswa.presentation.dashboard
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.awesomedialog.AwesomeDialog
 import com.reindrairawan.organisasimahasiswa.domain.common.base.BaseResult
 import com.reindrairawan.organisasimahasiswa.domain.dashboard.category.entity.CategoriesEntity
 import com.reindrairawan.organisasimahasiswa.domain.dashboard.category.usecase.CategoriesUseCase
@@ -54,6 +56,8 @@ class DashboardViewModel @Inject constructor(val categoriesUseCase: CategoriesUs
         }
     }
 
+
+
     private fun showToast(message: String) {
         state.value = DashboardState.ShowToast(message)
     }
@@ -71,4 +75,5 @@ sealed class DashboardState {
     object Init : DashboardState()
     data class IsLoading(val isLoading: Boolean) : DashboardState()
     data class ShowToast(val message: String) : DashboardState()
+
 }
