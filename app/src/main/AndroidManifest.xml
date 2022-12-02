@@ -4,6 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-feature android:name="android.hardware.camera" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:name=".presentation.App"
         android:allowBackup="true"
@@ -17,14 +21,27 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.main.IntroActivity"
-            android:theme="@style/Theme.OrganisasiMahasiswa.NoActionBar"
+            android:name=".presentation.dashboard.jenisKegiatan.ShowImageActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <!-- <activity -->
+        <activity
+            android:name=".utils.cameraX.CameraActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".presentation.main.IntroActivity"
+            android:exported="false"
+            android:theme="@style/Theme.OrganisasiMahasiswa.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity> <!-- <activity -->
         <!-- android:name=".presentation.fuzzy.Prediksi_Activity" -->
         <!-- android:exported="false"> -->
         <!-- <meta-data -->

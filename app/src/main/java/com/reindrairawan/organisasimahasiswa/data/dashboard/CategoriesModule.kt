@@ -3,7 +3,10 @@ package com.reindrairawan.organisasimahasiswa.data.dashboard
 import com.reindrairawan.organisasimahasiswa.data.common.module.NetworkModule
 import com.reindrairawan.organisasimahasiswa.data.dashboard.remote.api.CategoriesApi
 import com.reindrairawan.organisasimahasiswa.data.dashboard.repository.CategoriesRepositoryImpl
+import com.reindrairawan.organisasimahasiswa.data.login.remote.api.LoginApi
+import com.reindrairawan.organisasimahasiswa.data.login.repository.LoginRepositoryImpl
 import com.reindrairawan.organisasimahasiswa.domain.dashboard.category.CategoriesRepository
+import com.reindrairawan.organisasimahasiswa.domain.login.LoginRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,4 +30,17 @@ class CategoriesModule {
     fun provideCategoriesRepository(categoriesApi: CategoriesApi):CategoriesRepository{
         return CategoriesRepositoryImpl(categoriesApi)
     }
+
+//    @Singleton
+//    @Provides
+//    fun provideTambahJenisKegiatanApi(retrofit: Retrofit): CategoriesApi {
+//        return retrofit.create(CategoriesApi::class.java)
+//
+//    }
+//
+//    @Singleton
+//    @Provides
+//    fun provideTambahJenisKegiatanRepository(categoriesApi: CategoriesApi): CategoriesRepository {
+//        return CategoriesRepositoryImpl(categoriesApi)
+//    }
 }

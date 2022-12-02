@@ -1,37 +1,69 @@
 package com.reindrairawan.organisasimahasiswa.presentation.dashboard
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.reindrairawan.organisasimahasiswa.databinding.ActivityMainBinding
 import com.reindrairawan.organisasimahasiswa.domain.dashboard.category.entity.CategoriesEntity
 import com.reindrairawan.organisasimahasiswa.infra.utils.SharedPrefs
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.*
+import com.reindrairawan.organisasimahasiswa.presentation.dashboard.jenisKegiatan.ShowImageActivity
 import com.reindrairawan.organisasimahasiswa.presentation.main.IntroActivity
+import com.reindrairawan.organisasimahasiswa.utils.cameraX.CameraActivity
+import com.reindrairawan.organisasimahasiswa.utils.cameraX.rotateBitmap
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-    //    private val binding get() = _binding
     private val viewModel: DashboardViewModel by viewModels()
+    private var getFile: File? = null
 
     @Inject
     lateinit var prefs: SharedPrefs
+
+    companion object {
+        const val CAMERA_X_RESULT = 200
+
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private const val REQUEST_CODE_PERMISSIONS = 10
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (!allPermissionsGranted()) {
+                Toast.makeText(
+                    this, "Tidak mendapatkan permission.", Toast.LENGTH_SHORT
+                ).show()
+                finish()
+            }
+        }
+    }
+
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,13 +78,22 @@ class MainActivity : AppCompatActivity() {
         binding.welcomeTextview.text = "Selamat Datang " + prefs.getUsername()
         showToast(prefs.getToken())
 
+        if (!allPermissionsGranted()) {
+            ActivityCompat.requestPermissions(
+                this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
+            )
+        }
+
         addCategory()
     }
 
     private fun addCategory() {
         binding.cameraFloat.setOnClickListener {
-            AwesomeDialogMessage(this, "Camera", "Gallery"){
-                Log.d("TAG", "addCategory: "+it)
+            AwesomeDialogMessage(this, "Camera", "Gallery") {
+                Log.d("TAG", "addCategory: " + it)
+                if (it.equals("Camera")) {
+                    startCameraX()
+                }
             }
 
 
@@ -60,6 +101,37 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun startCameraX() {
+        val intent = Intent(this, CameraActivity::class.java)
+        launcherIntentCameraX.launch(intent)
+    }
+
+    private fun startGallery() {
+        Toast.makeText(this, "Fitur ini belum tersedia", Toast.LENGTH_SHORT).show()
+    }
+
+    private val launcherIntentCameraX = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) {
+        if (it.resultCode == CAMERA_X_RESULT) {
+            val myFile = it.data?.getSerializableExtra("picture") as File
+            val isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
+
+            val result = rotateBitmap(
+                BitmapFactory.decodeFile(myFile.path), isBackCamera
+            )
+
+            binding.previewImageView.setImageBitmap(result)
+            toShowImage(myFile)
+//            showToast(result.toString())
+        }
+    }
+
+    private fun toShowImage(result: File) {
+        val intent = Intent(this, ShowImageActivity::class.java)
+        intent.putExtra("Bitmap", result)
+        startActivity(intent)
+    }
 
     private fun observe() {
         observeState()
@@ -70,8 +142,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.mCategories.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
             .onEach { categories ->
                 handleCategories(categories)
-            }
-            .launchIn(lifecycleScope)
+            }.launchIn(lifecycleScope)
     }
 
     private fun handleCategories(categories: List<CategoriesEntity>) {
@@ -85,11 +156,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeState() {
-        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach { state ->
+        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach { state ->
                 handleState(state)
-            }
-            .launchIn(lifecycleScope)
+            }.launchIn(lifecycleScope)
     }
 
     private fun handleState(state: DashboardState) {
