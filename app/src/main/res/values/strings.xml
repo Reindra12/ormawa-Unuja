@@ -32,4 +32,7 @@
     <string name="categories">Event</string>
     <string name="dialog_camera">Pilih Gambar</string>
     <string name="dialog_body_camera">Camera yang digunakan merupakan versi CameraX</string>
+    <string name="upload_image">Upload Gambar</string>
+    <string name="hint_keterangan_foto">Keterangan Gambar</string>
+    <string name="keterangan_error">Keterangan gambar tidak boleh kosong</string>
 </resources>
