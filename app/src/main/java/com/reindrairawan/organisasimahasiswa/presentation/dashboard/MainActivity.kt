@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.fetchCategories()
 
         binding.welcomeTextview.text = "Selamat Datang " + prefs.getUsername()
-        showToast(prefs.getToken())
+//        showToast(prefs.getToken())
 
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
@@ -100,7 +100,6 @@ class MainActivity : AppCompatActivity() {
     private fun addCategory() {
         binding.cameraFloat.setOnClickListener {
             AwesomeDialogMessage(this, "Camera", "Gallery") {
-                Log.d("TAG", "addCategory: " + it)
                 if (it.equals("Camera")) {
                     startCameraX()
                 } else {
@@ -226,7 +225,6 @@ class MainActivity : AppCompatActivity() {
             goToLoginActivity()
         }
     }
-
 
     private fun goToLoginActivity() {
         startActivity(Intent(this, IntroActivity::class.java))

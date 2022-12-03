@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -15,11 +16,12 @@ import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedResponse
 import com.reindrairawan.organisasimahasiswa.data.dashboard.remote.dto.JenisKegiatanResponse
 import com.reindrairawan.organisasimahasiswa.databinding.ActivityShowImageBinding
 import com.reindrairawan.organisasimahasiswa.domain.dashboard.jenisKegiatan.entity.JenisKegiatanEntity
+import com.reindrairawan.organisasimahasiswa.presentation.common.extension.AwesomeDialogSuccess
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showGenericAlertDialog
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showToast
+import com.reindrairawan.organisasimahasiswa.presentation.common.extension.visible
 import com.reindrairawan.organisasimahasiswa.presentation.dashboard.MainActivity
 import com.reindrairawan.organisasimahasiswa.utils.cameraX.bitmapToFile
-import com.reindrairawan.organisasimahasiswa.utils.cameraX.reduceFileImage
 import com.reindrairawan.organisasimahasiswa.utils.cameraX.rotateBitmap
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -30,6 +32,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+
 
 @AndroidEntryPoint
 class ShowImageActivity : AppCompatActivity() {
@@ -45,7 +48,7 @@ class ShowImageActivity : AppCompatActivity() {
 
         setContentView(binding.root)
         observe()
-        getImage()
+        getFileFromMain()
         uploadImage()
 
     }
@@ -98,6 +101,7 @@ class ShowImageActivity : AppCompatActivity() {
 
                 } else {
                     uploadImageToServer(keterangan, getFile)
+                    binding.loadingProgressBar.visible()
                 }
             }
         }
@@ -132,7 +136,7 @@ class ShowImageActivity : AppCompatActivity() {
         return true
     }
 
-    private fun getImage() {
+    private fun getFileFromMain() {
         var files = intent.getSerializableExtra("Bitmap") as File
         val isBackCamera = intent.getBooleanExtra("isBackCamera", true) as Boolean
         var status = intent.getStringExtra("status")
@@ -150,7 +154,22 @@ class ShowImageActivity : AppCompatActivity() {
     }
 
     private fun goToMainActivity() {
-        startActivity(Intent(this@ShowImageActivity, MainActivity::class.java))
-        finish()
+        AwesomeDialogSuccess(
+            this@ShowImageActivity,
+            "Selamat !",
+            "Berhasil menambahkan jenis kegiatan"
+        )
+        object : CountDownTimer(3000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                // TODO Auto-generated method stub
+
+            }
+
+            override fun onFinish() {
+                // TODO Auto-generated method stub
+                startActivity(Intent(this@ShowImageActivity, MainActivity::class.java))
+                finish()
+            }
+        }.start()
     }
 }
