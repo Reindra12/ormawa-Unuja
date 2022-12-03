@@ -140,9 +140,7 @@ class MainActivity : AppCompatActivity() {
     ) { result ->
         if (result.resultCode == RESULT_OK) {
             val selectedImg: Uri = result.data?.data as Uri
-
             val myFile = uriToFile(selectedImg, this@MainActivity)
-
             getFile = myFile
             toShowImage(getFile!!, true, "gallery")
         }

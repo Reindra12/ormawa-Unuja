@@ -42,79 +42,6 @@
             android:visibility="gone"
             tools:listitem="@layout/item_category" />
 
-
-        <!--        <com.google.android.material.textfield.TextInputLayout-->
-        <!--            android:id="@+id/email_input"-->
-        <!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            app:boxBackgroundColor="@android:color/transparent"-->
-        <!--            app:errorEnabled="true">-->
-
-        <!--            <com.google.android.material.textfield.TextInputEditText-->
-        <!--                android:id="@+id/email_edit_text"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:hint="@string/hint_login_email_edit_text" />-->
-        <!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-        <!--        <com.google.android.material.textfield.TextInputLayout-->
-        <!--            android:id="@+id/password_input"-->
-        <!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            app:boxBackgroundColor="@android:color/transparent"-->
-        <!--            app:errorEnabled="true"-->
-        <!--            app:passwordToggleEnabled="true">-->
-
-        <!--            <com.google.android.material.textfield.TextInputEditText-->
-        <!--                android:id="@+id/password_edit_text"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:hint="@string/hint_password"-->
-        <!--                android:inputType="textPassword" />-->
-        <!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-        <!--        <com.google.android.material.button.MaterialButton-->
-        <!--            android:id="@+id/login_button"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="@string/button_text_login" />-->
-
-        <!--    </LinearLayout>-->
-
-
-        <!--    <LinearLayout-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="wrap_content"-->
-        <!--        android:layout_alignParentBottom="true"-->
-        <!--        android:layout_centerHorizontal="true"-->
-        <!--        android:orientation="horizontal">-->
-
-        <!--        <com.google.android.material.button.MaterialButton-->
-        <!--            android:id="@+id/register_button"-->
-        <!--            style="@style/Widget.MaterialComponents.Button.TextButton"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-
-        <!--            android:layout_marginStart="@dimen/margin_small"-->
-        <!--            android:layout_marginTop="@dimen/margin_small"-->
-        <!--            android:layout_marginEnd="@dimen/margin_small"-->
-        <!--            android:layout_marginBottom="@dimen/margin_small"-->
-        <!--            android:text="@string/button_text_I_dont_have_account" />-->
-
-        <!--        <com.google.android.material.button.MaterialButton-->
-        <!--            android:id="@+id/prediksi_button"-->
-        <!--            style="@style/Widget.MaterialComponents.Button.TextButton"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_alignParentBottom="true"-->
-        <!--            android:layout_centerHorizontal="true"-->
-        <!--            android:layout_marginStart="@dimen/margin_small"-->
-        <!--            android:layout_marginTop="@dimen/margin_small"-->
-        <!--            android:layout_marginEnd="@dimen/margin_small"-->
-        <!--            android:layout_marginBottom="@dimen/margin_small"-->
-        <!--            android:text="gas saja prediksi " />-->
     </LinearLayout>
 
     <ProgressBar
@@ -144,6 +71,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
+        android:backgroundTint="@color/relative"
         android:contentDescription="ds"
         android:src="@drawable/ic_camera"
         android:layout_alignParentBottom="true"

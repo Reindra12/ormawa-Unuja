@@ -15,7 +15,7 @@ fun Context.AwesomeDialogMessage(
 
 ) {
     AwesomeDialog.build(context as Activity).title(getString(R.string.dialog_camera))
-        .body(getString(R.string.dialog_body_camera)).icon(R.drawable.camera)
+        .body(getString(R.string.dialog_body_camera)).icon(R.drawable.camera_dialog)
         .onPositive(positveMessage) {
             callback?.invoke(positveMessage)
         }.onNegative(negativeMessage) {
@@ -25,20 +25,6 @@ fun Context.AwesomeDialogMessage(
 
 fun Context.AwesomeDialogSuccess(context: Context, title: String, body: String) {
     AwesomeDialog.build(context as Activity).title(title).body(body).icon(R.drawable.ic_tick)
-//    context.finish()
-//    val timer: Thread = object : Thread() {
-//        override fun run() {
-//            try {
-//                sleep(1500)
-//                pDialog.cancel()
-//                super.run()
-//            } catch (e: InterruptedException) {
-//                e.printStackTrace()
-//            }
-//        }
-//    }
-
-
 }
 
 

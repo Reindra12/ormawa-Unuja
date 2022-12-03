@@ -31,16 +31,4 @@ class CategoriesModule {
         return CategoriesRepositoryImpl(categoriesApi)
     }
 
-//    @Singleton
-//    @Provides
-//    fun provideTambahJenisKegiatanApi(retrofit: Retrofit): CategoriesApi {
-//        return retrofit.create(CategoriesApi::class.java)
-//
-//    }
-//
-//    @Singleton
-//    @Provides
-//    fun provideTambahJenisKegiatanRepository(categoriesApi: CategoriesApi): CategoriesRepository {
-//        return CategoriesRepositoryImpl(categoriesApi)
-//    }
 }
