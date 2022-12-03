@@ -132,13 +132,7 @@ class MainActivity : AppCompatActivity() {
             val isBackCamera = it.data?.getBooleanExtra("isBackCamera", true) as Boolean
 
             getFile = reduceFileImage(myFile)
-            val result = rotateBitmap(
-                BitmapFactory.decodeFile(getFile!!.path), isBackCamera
-            )
-
-            binding.previewImageView.setImageBitmap(result)
             toShowImage(getFile!!, isBackCamera, "camera")
-//            showToast(result.toString())
         }
     }
 
@@ -151,8 +145,6 @@ class MainActivity : AppCompatActivity() {
             val myFile = uriToFile(selectedImg, this@MainActivity)
 
             getFile = myFile
-
-            binding.previewImageView.setImageURI(selectedImg)
             toShowImage(getFile!!, true, "gallery")
         }
     }
