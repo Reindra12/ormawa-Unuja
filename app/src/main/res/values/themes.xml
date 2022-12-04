@@ -15,8 +15,10 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+
     <style name="Theme.OrganisasiMahasiswa.NoActionBar">
-<!--        <item name="colorPrimary">@color/teal_200</item>-->
+        <!--        <item name="colorPrimary">@color/teal_200</item>-->
         <item name="colorPrimaryDark">@color/title_text_color</item>
         <item name="colorAccent">@color/teal_200</item>
         <item name="android:titleTextStyle">@color/title_text_color</item>
@@ -26,6 +28,12 @@
         <item name="android:statusBarColor" tools:targetApi="lollipop">@color/white</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
 
+    </style>
+
+    <style name="TextBottomNavigation" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:background">@color/black</item>
     </style>
 
     <style name="Theme.Onboarding" parent="android:Theme.Material">
@@ -39,7 +47,6 @@
         <item name="boxBackgroundColor">@color/black</item>
         <item name="boxBackgroundMode">outline</item>
     </style>
-
 
 
 </resources>

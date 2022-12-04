@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_navigation"
+    app:startDestination="@id/item_home">
+
+    <fragment
+        android:id="@+id/item_home"
+        android:name="com.reindrairawan.organisasimahasiswa.presentation.dashboard.DashboardFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_dashboard">
+<!--        <action-->
+<!--            android:id="@+id/action_item_home_to_searchFragment"-->
+<!--            app:destination="@id/searchFragment" />-->
+    </fragment>
+    <fragment
+        android:id="@+id/item_event"
+        android:name="com.reindrairawan.organisasimahasiswa.presentation.events.EventsFragment"
+        android:label="fragment_cart"
+        tools:layout="@layout/fragment_events" />
+    <fragment
+        android:id="@+id/item_notification"
+        android:name="com.reindrairawan.organisasimahasiswa.presentation.notification.NotificationFragment"
+        android:label="fragment_notification"
+        tools:layout="@layout/fragment_notification" />
+
+    <fragment
+        android:id="@+id/item_profile"
+        android:name="com.reindrairawan.organisasimahasiswa.presentation.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+
+</navigation>
