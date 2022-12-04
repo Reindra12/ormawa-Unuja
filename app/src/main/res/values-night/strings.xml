@@ -5,4 +5,9 @@
     <string name="upload_image">Upload Gambar</string>
     <string name="hint_keterangan_foto">Keterangan Gambar</string>
     <string name="keterangan_error">Keterangan gambar tidak boleh kosong</string>
+    <string name="home">Home</string>
+    <string name="event">My Events</string>
+    <string name="notification">Notifikasi</string>
+    <string name="scan">Pemindai</string>
+    <string name="profile">Profil</string>
 </resources>

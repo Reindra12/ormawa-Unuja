@@ -18,6 +18,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.reindrairawan.organisasimahasiswa.R
 import com.reindrairawan.organisasimahasiswa.databinding.ActivityCameraBinding
+import com.reindrairawan.organisasimahasiswa.presentation.dashboard.DashboardFragment
 import com.reindrairawan.organisasimahasiswa.presentation.dashboard.MainActivity
 import java.nio.file.Files.createFile
 import java.text.SimpleDateFormat
@@ -103,7 +104,7 @@ class CameraActivity : AppCompatActivity() {
                         "isBackCamera",
                         cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA
                     )
-                    setResult(MainActivity.CAMERA_X_RESULT, intent)
+                    setResult(DashboardFragment.CAMERA_X_RESULT, intent)
                     finish()
                 }
             }
