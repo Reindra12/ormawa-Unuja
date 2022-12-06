@@ -111,5 +111,6 @@ dependencies {
 
     // System UI Controller - Accompanist
     implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
+    implementation 'com.makeramen:roundedimageview:2.3.0'
 
 }

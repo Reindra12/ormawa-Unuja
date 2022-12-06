@@ -23,6 +23,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+
 import com.reindrairawan.organisasimahasiswa.R
 import com.reindrairawan.organisasimahasiswa.databinding.FragmentDashboardBinding
 import com.reindrairawan.organisasimahasiswa.domain.dashboard.category.entity.CategoriesEntity
@@ -32,6 +33,7 @@ import com.reindrairawan.organisasimahasiswa.presentation.common.extension.gone
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showToast
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.visible
 import com.reindrairawan.organisasimahasiswa.presentation.dashboard.jenisKegiatan.ShowImageActivity
+import com.reindrairawan.organisasimahasiswa.presentation.dashboard.search.SearchActivity
 import com.reindrairawan.organisasimahasiswa.presentation.main.IntroActivity
 import com.reindrairawan.organisasimahasiswa.utils.cameraX.CameraActivity
 import com.reindrairawan.organisasimahasiswa.utils.cameraX.reduceFileImage
@@ -104,20 +106,24 @@ class DashboardFragment : Fragment() {
         viewModel.fetchCategories()
 
         binding.welcomeTextview.text = "Selamat Datang " + prefs.getUsername()
-
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
                 requireActivity(), REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
             )
         }
-
         addCategory()
+        searchData()
+    }
 
+    private fun searchData() {
+      binding.searchImageview.setOnClickListener {
+          startActivity(Intent(requireContext(), SearchActivity::class.java))
+      }
     }
 
     private fun addCategory() {
         binding.cameraFloat.setOnClickListener {
-            context?.AwesomeDialogMessage(requireContext(), "Camera", "Gallery") {
+            requireActivity().AwesomeDialogMessage(requireActivity(), "Camera", "Gallery") {
                 if (it.equals("Camera")) {
                     startCameraX()
                 } else {
