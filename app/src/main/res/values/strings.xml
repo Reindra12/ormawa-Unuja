@@ -42,4 +42,8 @@
     <string name="notification">Notifikasi</string>
     <string name="scan">Pemindai</string>
     <string name="profile">Profil</string>
+    <string name="search_here">Apa yang anda cari?</string>
+    <string name="your_search_history">History pencarian</string>
+    <string name="recently_viewed">" Baru saja dilihat"</string>
+    <string name="search">Search</string>
 </resources>

@@ -38,6 +38,14 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".presentation.dashboard.search.SearchActivity"
+            android:theme="@style/Theme.OrganisasiMahasiswa.NoActionBar"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".presentation.main.IntroActivity"
             android:exported="false"
             android:theme="@style/Theme.OrganisasiMahasiswa.NoActionBar">
