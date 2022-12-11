@@ -4,7 +4,10 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedListResponse
+import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedResponse
+import com.reindrairawan.organisasimahasiswa.data.register.remote.dto.RegisterResponse
 import com.reindrairawan.organisasimahasiswa.data.searchview.remote.api.KegiatanApi
+import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryKegiatanRequest
 import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryPencarianResponse
 import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.KegiatanResponse
 import com.reindrairawan.organisasimahasiswa.domain.common.base.BaseResult
@@ -35,7 +38,8 @@ class KegiatanRepositoryImpl @Inject constructor(private val kegiatanApi: Kegiat
                 }
                 emit(BaseResult.Success(history))
             } else {
-                val type = object : TypeToken<WrappedListResponse<HistoryPencarianResponse>>() {}.type
+                val type =
+                    object : TypeToken<WrappedListResponse<HistoryPencarianResponse>>() {}.type
                 val err = Gson().fromJson<WrappedListResponse<HistoryPencarianResponse>>(
                     response.errorBody()!!.charStream(), type
                 )!!
@@ -76,6 +80,29 @@ class KegiatanRepositoryImpl @Inject constructor(private val kegiatanApi: Kegiat
             }
         }
 
+    }
+
+    override suspend fun setHistoryKegiatan(historyKegiatanRequest: HistoryKegiatanRequest): Flow<BaseResult<HistoryKegiatanEntity, WrappedResponse<HistoryPencarianResponse>>> {
+        return flow {
+            val response = kegiatanApi.setHistoryKegiatan(historyKegiatanRequest)
+            if (response.isSuccessful) {
+                val body = response.body()!!
+                val historyKegiatanEntity = HistoryKegiatanEntity(
+                    body.data?.id!!,
+                    body.data?.judul!!,
+                    body.data?.waktu!!
+                )
+
+                emit(BaseResult.Success(historyKegiatanEntity))
+            } else {
+                val type = object : TypeToken<WrappedResponse<HistoryPencarianResponse>>() {}.type
+                val err: WrappedResponse<HistoryPencarianResponse> =
+                    Gson().fromJson(response.errorBody()!!.charStream(), type)!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+
+            }
+        }
     }
 
 

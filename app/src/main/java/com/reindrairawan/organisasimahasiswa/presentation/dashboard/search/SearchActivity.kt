@@ -17,6 +17,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.reindrairawan.organisasimahasiswa.R
 import com.reindrairawan.organisasimahasiswa.data.DummyData
+import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedResponse
+import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryKegiatanRequest
+import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryPencarianResponse
 import com.reindrairawan.organisasimahasiswa.databinding.ActivitySearchBinding
 import com.reindrairawan.organisasimahasiswa.domain.dashboard.jenisKegiatan.entity.RecentlyEventEntity
 import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.HistoryKegiatanEntity
@@ -25,6 +28,9 @@ import com.reindrairawan.organisasimahasiswa.infra.utils.SharedPrefs
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.gone
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showToast
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.visible
+import com.reindrairawan.organisasimahasiswa.presentation.dashboard.setHistoryKegiatan.SetHistoryKegiatanViewModel
+import com.reindrairawan.organisasimahasiswa.presentation.dashboard.setHistoryKegiatan.SetHistoryKegiatanViewModel.SetHistoryKegiatanState
+
 import com.reindrairawan.organisasimahasiswa.utils.TinyDB
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -43,6 +49,8 @@ class SearchActivity : AppCompatActivity() {
     }
     private val viewModel: KegiatanViewModel by viewModels()
     private val viewModelhistory: SearchKegiatanViewModel by viewModels()
+    private val viewModelSetHistory: SetHistoryKegiatanViewModel by viewModels()
+
     private lateinit var recentlyAdapter: RecentlyAdapter
     private lateinit var getKegiatanAdapter: GetKegiatanAdapter
     var recentlyEventEntity: ArrayList<RecentlyEventEntity> = arrayListOf()
@@ -61,8 +69,33 @@ class SearchActivity : AppCompatActivity() {
         viewModelhistory.fetchSearchKegiatan(1)
         observe()
         observeHistory()
+        observeSetHistory()
         setUpRecyclerView()
         actionView()
+    }
+
+    private fun observeSetHistory() {
+        viewModelSetHistory.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state -> handleStateSethistory(state) }
+    }
+
+    private fun handleStateSethistory(state: SetHistoryKegiatanState) {
+        when (state) {
+            is SetHistoryKegiatanState.IsLoading -> handleLoading(state.isLoading)
+            is SetHistoryKegiatanState.Init -> Unit
+            is SetHistoryKegiatanState.SuccessSetHistory -> handleSuccessSetHistory(state.historyKegiatanEntity)
+            is SetHistoryKegiatanState.ShowToast -> showToast(state.message)
+            is SetHistoryKegiatanState.ErrorSetHistory -> handleErrorSetHistory(state.rawResponse)
+
+        }
+    }
+
+    private fun handleErrorSetHistory(rawResponse: WrappedResponse<HistoryPencarianResponse>) {
+        showToast(rawResponse.message)
+    }
+
+    private fun handleSuccessSetHistory(historyKegiatanEntity: HistoryKegiatanEntity) {
+
     }
 
     private fun observeHistory() {
@@ -170,6 +203,13 @@ class SearchActivity : AppCompatActivity() {
 
                 val b = bundleOf("nama_kegiatan" to kegiatans.nama_kegiatan)
                 recentlyEventEntity.add(RecentlyEventEntity(kegiatans.nama_kegiatan))
+                viewModelSetHistory.setHistory(
+                    HistoryKegiatanRequest(
+                        kegiatans.nama_kegiatan,
+                        "2020-12-12",
+                        1
+                    )
+                )
             }
 
         })

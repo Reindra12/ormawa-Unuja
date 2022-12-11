@@ -23,10 +23,6 @@ class KegiatanViewModel @Inject constructor(private val getAllKegiatanUseCase: G
     private val kegiatan = MutableStateFlow<List<KegiatanEntity>>(mutableListOf())
     val mKegiatan: StateFlow<List<KegiatanEntity>> get() = kegiatan
 
-//    init {
-//        fetchAllKegiatan()
-//    }
-
      fun fetchAllKegiatan() {
         viewModelScope.launch {
             getAllKegiatanUseCase.invoke()
