@@ -87,6 +87,7 @@ class LoginActivity : AppCompatActivity() {
     private fun handleSuccessLogin(loginEntity: LoginEntity) {
         pref.saveToken(loginEntity.token)
         pref.saveUsername(loginEntity.nama)
+        pref.saveIdMahasiswa(loginEntity.id)
 
         goToMainActivity()
 

@@ -10,6 +10,7 @@ class SharedPrefs(private val context: Context) {
         private const val PREF_TOKEN = "user_Token"
         private const val PREF_USERNAME = "username"
         private const val PREF_RECENTLY = "recently"
+        private const val PREF_ID_MAHASISWA = "1"
 
     }
 
@@ -19,6 +20,14 @@ class SharedPrefs(private val context: Context) {
 
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
+
+    fun saveIdMahasiswa(id: Int) {
+        put(PREF_ID_MAHASISWA, id)
+    }
+
+    fun getIdMahasiswa(): Int {
+        return get(PREF_ID_MAHASISWA, Int::class.java)
+    }
 
     fun saveUsername(username: String) {
         put(PREF_USERNAME, username)

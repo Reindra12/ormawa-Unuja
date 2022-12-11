@@ -207,7 +207,7 @@ class SearchActivity : AppCompatActivity() {
                     HistoryKegiatanRequest(
                         kegiatans.nama_kegiatan,
                         "2020-12-12",
-                        1
+                        prefs.getIdMahasiswa()
                     )
                 )
             }
