@@ -2,29 +2,38 @@ package com.reindrairawan.organisasimahasiswa.infra.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.reindrairawan.organisasimahasiswa.data.dashboard.repository.CategoriesRepositoryImpl
-import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
-class SharedPrefs (private val context: Context) {
+class SharedPrefs(private val context: Context) {
     companion object {
         private const val PREF = "Ormawa"
         private const val PREF_TOKEN = "user_Token"
         private const val PREF_USERNAME = "username"
+        private const val PREF_RECENTLY = "recently"
 
     }
+
     fun init(context: Context) {
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
     }
+
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
 
-    fun saveUsername(username: String){
+    fun saveUsername(username: String) {
         put(PREF_USERNAME, username)
     }
 
-    fun getUsername(): String{
+    fun getUsername(): String {
         return get(PREF_USERNAME, String::class.java)
+    }
+
+    fun saveRecently(recently: String) {
+        put(PREF_RECENTLY, recently)
+    }
+
+    fun getRecently(): String {
+        return get(PREF_RECENTLY, String::class.java)
     }
 
     fun saveToken(token: String) {
@@ -45,6 +54,17 @@ class SharedPrefs (private val context: Context) {
 
     private fun <T> get(key: String, clazz: Class<T>): T =
         when (clazz) {
+            String::class.java -> sharedPref.getString(key, "")
+            Boolean::class.java -> sharedPref.getBoolean(key, false)
+            Float::class.java -> sharedPref.getFloat(key, -1f)
+            Double::class.java -> sharedPref.getFloat(key, -1f)
+            Int::class.java -> sharedPref.getInt(key, -1)
+            Long::class.java -> sharedPref.getLong(key, -1L)
+            else -> null
+        } as T
+
+    private fun <T> gets(key: String, data: T): T =
+        when (data) {
             String::class.java -> sharedPref.getString(key, "")
             Boolean::class.java -> sharedPref.getBoolean(key, false)
             Float::class.java -> sharedPref.getFloat(key, -1f)

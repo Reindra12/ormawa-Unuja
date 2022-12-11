@@ -86,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun handleSuccessLogin(loginEntity: LoginEntity) {
         pref.saveToken(loginEntity.token)
-        pref.saveUsername(loginEntity.name)
+        pref.saveUsername(loginEntity.nama)
 
         goToMainActivity()
 
@@ -106,11 +106,11 @@ class LoginActivity : AppCompatActivity() {
 
     private fun login() {
         binding.loginButton.setOnClickListener {
-            val email = binding.emailEditText.text.toString().trim()
+            val username = binding.emailEditText.text.toString().trim()
             val password = binding.passwordEditText.text.toString().trim()
 
-            if (validate(email, password)) {
-                viewModel.login(LoginRequest(email, password))
+            if (validate(username, password)) {
+                viewModel.login(LoginRequest(username, password))
             }
         }
     }

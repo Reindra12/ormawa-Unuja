@@ -59,7 +59,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:id="@+id/email_edit_text"
-                android:hint="@string/hint_login_email_edit_text"
+                android:hint="@string/hint_login_username_edit_text"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -106,6 +106,7 @@ class DashboardFragment : Fragment() {
         viewModel.fetchCategories()
 
         binding.welcomeTextview.text = "Selamat Datang " + prefs.getUsername()
+        context?.showToast(prefs.getToken())
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
                 requireActivity(), REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS
@@ -116,9 +117,9 @@ class DashboardFragment : Fragment() {
     }
 
     private fun searchData() {
-      binding.searchImageview.setOnClickListener {
-          startActivity(Intent(requireContext(), SearchActivity::class.java))
-      }
+        binding.searchImageview.setOnClickListener {
+            startActivity(Intent(requireContext(), SearchActivity::class.java))
+        }
     }
 
     private fun addCategory() {
@@ -229,7 +230,7 @@ class DashboardFragment : Fragment() {
         val mAdapter = DashboardAdapter(mutableListOf())
 //        mAdapter.setItemTapListener(object : DashboardAdapter.OnItemTap {
 //            override fun onTap(categories: CategoriesEntity) {
-//                val b = bundleOf("id" to categories.id)
+//                val b = contebundleOf("id" to categories.id)
 //
 //            }
 //        })

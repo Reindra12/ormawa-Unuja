@@ -46,4 +46,8 @@
     <string name="your_search_history">History pencarian</string>
     <string name="recently_viewed">" Baru saja dilihat"</string>
     <string name="search">Search</string>
+    <string name="nama_kegiatan">nama kegiatan</string>
+    <string name="deskripsi_kegiatan">deskripsi kegiatan</string>
+    <string name="tempat_kegiatan">Tempat kegiatan</string>
+    <string name="hint_login_username_edit_text">Username</string>
 </resources>
