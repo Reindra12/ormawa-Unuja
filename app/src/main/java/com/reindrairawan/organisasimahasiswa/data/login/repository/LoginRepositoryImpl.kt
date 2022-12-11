@@ -21,9 +21,11 @@ class LoginRepositoryImpl @Inject constructor(private val loginApi: LoginApi) : 
                 val body = response.body()
                 val loginEntity = LoginEntity(
                     body?.data?.id!!,
-                    body.data?.name!!,
-                    body.data?.email!!,
-                    body.data?.token!!
+                    body.data?.nama!!,
+                    body.data?.nim!!,
+                    body.data?.user!!,
+                    body.data?.token!!,
+
                 )
                 emit(BaseResult.Success(loginEntity))
 
