@@ -19,6 +19,7 @@ import com.reindrairawan.organisasimahasiswa.R
 import com.reindrairawan.organisasimahasiswa.data.DummyData
 import com.reindrairawan.organisasimahasiswa.databinding.ActivitySearchBinding
 import com.reindrairawan.organisasimahasiswa.domain.dashboard.jenisKegiatan.entity.RecentlyEventEntity
+import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.HistoryKegiatanEntity
 import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.KegiatanEntity
 import com.reindrairawan.organisasimahasiswa.infra.utils.SharedPrefs
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.gone
@@ -41,17 +42,9 @@ class SearchActivity : AppCompatActivity() {
         )
     }
     private val viewModel: KegiatanViewModel by viewModels()
+    private val viewModelhistory: SearchKegiatanViewModel by viewModels()
     private lateinit var recentlyAdapter: RecentlyAdapter
     private lateinit var getKegiatanAdapter: GetKegiatanAdapter
-
-    private val dummyData = mutableListOf(
-        DummyData("Breakfast Buffet at Hotel Grandhika Iskandaryah Jakarta"),
-        DummyData("Breakfast Buffet at Hotel Grandhika Iskandaryah Jakarta"),
-        DummyData("Breakfast Buffet at Hotel Grandhika Iskandaryah Jakarta")
-    )
-    lateinit var tinyDB: TinyDB
-    var recently = ArrayList<String>()
-
     var recentlyEventEntity: ArrayList<RecentlyEventEntity> = arrayListOf()
 
     @Inject
@@ -63,14 +56,46 @@ class SearchActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.white);
         setContentView(binding.root)
 
-        tinyDB = TinyDB(applicationContext)
 
         viewModel.fetchAllKegiatan()
+        viewModelhistory.fetchSearchKegiatan(1)
         observe()
+        observeHistory()
         setUpRecyclerView()
         actionView()
-//        setChip()
-//        getList()
+    }
+
+    private fun observeHistory() {
+        observeStateHistory()
+        observeHistoryPencarian()
+    }
+
+    private fun observeHistoryPencarian() {
+        viewModelhistory.mHistory.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { history ->
+                handleHistory(history)
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun handleHistory(history: List<HistoryKegiatanEntity>) {
+        history.forEach {
+            binding.chipHistory.addView(createTagChip(this, it))
+        }
+    }
+
+    private fun observeStateHistory() {
+        viewModelhistory.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state ->
+                handleStateHistory(state)
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun handleStateHistory(state: SearchKegiatanState) {
+        when (state) {
+            is SearchKegiatanState.IsLoading -> handleLoading(state.isLoading)
+            is SearchKegiatanState.ShowToast -> showToast(state.message)
+            is SearchKegiatanState.Init -> Unit
+        }
     }
 
     private fun actionView() {
@@ -145,11 +170,6 @@ class SearchActivity : AppCompatActivity() {
 
                 val b = bundleOf("nama_kegiatan" to kegiatans.nama_kegiatan)
                 recentlyEventEntity.add(RecentlyEventEntity(kegiatans.nama_kegiatan))
-
-                setLists(recentlyEventEntity)
-
-
-//                showToast(recentlyEventEntity.size.toString())
             }
 
         })
@@ -161,35 +181,11 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    fun setLists(list: ArrayList<RecentlyEventEntity>) {
-        val gson = Gson()
-        val json = gson.toJson(list)//converting list to Json
-        prefs.saveRecently(json)
-
-
-    }
-
-    private fun createTagChip(context: Context, chipName: RecentlyEventEntity): Chip {
+    private fun createTagChip(context: Context, chipName: HistoryKegiatanEntity): Chip {
         return Chip(context).apply {
-            text = chipName.nama_jenis_kegiatan
+            text = chipName.judul
             setChipBackgroundColorResource(R.color.color_grey_light)
             setTextColor(ContextCompat.getColor(context, R.color.relative))
-        }
-
-    }
-
-    fun getList(): ArrayList<RecentlyEventEntity> {
-        val gson = Gson()
-        var json = prefs.getRecently()
-        val type = object :
-            TypeToken<ArrayList<RecentlyEventEntity>>() {}.type//converting the json to list
-        return gson.fromJson(json, type)//returning the list
-    }
-
-    private fun setChip() {
-        getList().forEach {
-            binding.chipHistory.addView(createTagChip(this, it))
-            showToast(getList().size.toString())
         }
     }
 

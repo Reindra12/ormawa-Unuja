@@ -3,6 +3,7 @@ package com.reindrairawan.organisasimahasiswa.presentation.dashboard.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.reindrairawan.organisasimahasiswa.domain.common.base.BaseResult
+import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.HistoryKegiatanEntity
 import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.KegiatanEntity
 import com.reindrairawan.organisasimahasiswa.domain.searchview.usecase.SearchKegiatanUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,16 +20,17 @@ class SearchKegiatanViewModel @Inject constructor(
 ) : ViewModel() {
     private val state = MutableStateFlow<SearchKegiatanState>(SearchKegiatanState.Init)
     val mState: StateFlow<SearchKegiatanState> get() = state
-    private val kegiatan = MutableStateFlow<List<KegiatanEntity>>(mutableListOf())
-    val mKegiatan: StateFlow<List<KegiatanEntity>> get() = kegiatan
+    private val history = MutableStateFlow<List<HistoryKegiatanEntity>>(mutableListOf())
+    val mHistory: StateFlow<List<HistoryKegiatanEntity>> get() = history
 
 //    init {
 //        fetchSearchKegiatan()
 //    }
 
-     fun fetchSearchKegiatan(nama: String) {
+
+    fun fetchSearchKegiatan(id: Int) {
         viewModelScope.launch {
-            searchKegiatanUseCase.invoke(nama)
+            searchKegiatanUseCase.invoke(id)
                 .onStart { setLoading() }
                 .catch { exception ->
                     hideLoading()
@@ -38,7 +40,7 @@ class SearchKegiatanViewModel @Inject constructor(
                     hideLoading()
                     when (result) {
                         is BaseResult.Success -> {
-                            kegiatan.value = result.data
+                            history.value = result.data
                         }
                         is BaseResult.Error -> {
                             showToast(result.rawResponse.message)
