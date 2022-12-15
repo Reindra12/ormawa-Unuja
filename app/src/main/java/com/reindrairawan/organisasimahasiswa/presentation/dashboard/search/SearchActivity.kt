@@ -42,11 +42,13 @@ import kotlin.collections.ArrayList
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
 
-    private val binding: ActivitySearchBinding by lazy {
-        ActivitySearchBinding.inflate(
-            layoutInflater
-        )
-    }
+    //    private val binding: ActivitySearchBinding by lazy {
+//        ActivitySearchBinding.inflate(
+//            layoutInflater
+//        )
+//    }
+    private var _binding: ActivitySearchBinding? = null
+    private val binding get() = _binding
     private val viewModel: KegiatanViewModel by viewModels()
     private val viewModelhistory: SearchKegiatanViewModel by viewModels()
     private val viewModelSetHistory: SetHistoryKegiatanViewModel by viewModels()
@@ -54,19 +56,19 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var recentlyAdapter: RecentlyAdapter
     private lateinit var getKegiatanAdapter: GetKegiatanAdapter
     var recentlyEventEntity: ArrayList<RecentlyEventEntity> = arrayListOf()
+    var arrayHistory: ArrayList<String> = ArrayList()
 
     @Inject
     lateinit var prefs: SharedPrefs
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        _binding = ActivitySearchBinding.inflate(layoutInflater)
         window.statusBarColor = ContextCompat.getColor(this, R.color.white);
-        setContentView(binding.root)
+        setContentView(_binding!!.root)
 
-
+        viewModelhistory.fetchSearchKegiatan(prefs.getIdMahasiswa())
         viewModel.fetchAllKegiatan()
-        viewModelhistory.fetchSearchKegiatan(1)
         observe()
         observeHistory()
         observeSetHistory()
@@ -112,7 +114,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun handleHistory(history: List<HistoryKegiatanEntity>) {
         history.forEach {
-            binding.chipHistory.addView(createTagChip(this, it))
+            binding!!.chipHistory.addView(createTagChip(this, it))
         }
     }
 
@@ -132,11 +134,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun actionView() {
-        binding.imgBack.setOnClickListener {
+        binding!!.imgBack.setOnClickListener {
             finish()
         }
 
-        binding.searchView.setOnQueryTextListener(object :
+        binding!!.searchView.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
 //                getKegiatanAdapter.filter.filter(query)
@@ -166,7 +168,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun handleKegiatan(kegiatan: List<KegiatanEntity>) {
-        binding.rvRecently.adapter.let {
+        binding!!.rvRecently.adapter.let {
             if (it is GetKegiatanAdapter) {
                 viewModel.fetchAllKegiatan()
                 it.setData(kegiatan)
@@ -190,9 +192,9 @@ class SearchActivity : AppCompatActivity() {
 
     private fun handleLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding.loadingProgressBar.visible()
+            binding!!.loadingProgressBar.visible()
         } else {
-            binding.loadingProgressBar.gone()
+            binding!!.loadingProgressBar.gone()
         }
     }
 
@@ -213,8 +215,8 @@ class SearchActivity : AppCompatActivity() {
             }
 
         })
-        binding.rvRecently.apply {
-            binding.rvRecently.visible()
+        binding!!.rvRecently.apply {
+            binding!!.rvRecently.visible()
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             setHasFixedSize(true)
             adapter = getKegiatanAdapter
@@ -229,4 +231,27 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+
+    override fun onDestroy() {
+        super.onDestroy()
+        showToast("destroy")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        showToast("restart")
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        showToast("pause")
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showToast("resume")
+
+    }
 }
