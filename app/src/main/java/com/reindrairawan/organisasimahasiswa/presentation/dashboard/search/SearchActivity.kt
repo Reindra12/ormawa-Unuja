@@ -42,13 +42,12 @@ import kotlin.collections.ArrayList
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
 
-    //    private val binding: ActivitySearchBinding by lazy {
-//        ActivitySearchBinding.inflate(
-//            layoutInflater
-//        )
-//    }
-    private var _binding: ActivitySearchBinding? = null
-    private val binding get() = _binding
+    private val binding: ActivitySearchBinding by lazy {
+        ActivitySearchBinding.inflate(
+            layoutInflater
+        )
+    }
+
     private val viewModel: KegiatanViewModel by viewModels()
     private val viewModelhistory: SearchKegiatanViewModel by viewModels()
     private val viewModelSetHistory: SetHistoryKegiatanViewModel by viewModels()
@@ -56,7 +55,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var recentlyAdapter: RecentlyAdapter
     private lateinit var getKegiatanAdapter: GetKegiatanAdapter
     var recentlyEventEntity: ArrayList<RecentlyEventEntity> = arrayListOf()
-    var arrayHistory: ArrayList<String> = ArrayList()
+    var arrayHistory: List<HistoryKegiatanEntity> = ArrayList()
 
     @Inject
     lateinit var prefs: SharedPrefs
