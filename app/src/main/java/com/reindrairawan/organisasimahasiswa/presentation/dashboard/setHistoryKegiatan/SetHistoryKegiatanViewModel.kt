@@ -66,7 +66,6 @@ class SetHistoryKegiatanViewModel @Inject constructor(private val setHistoryKegi
         state.value = SetHistoryKegiatanState.IsLoading(true)
     }
 
-
     sealed class SetHistoryKegiatanState {
         object Init : SetHistoryKegiatanState()
         data class IsLoading(val isLoading: Boolean) : SetHistoryKegiatanState()

@@ -1,9 +1,11 @@
 package com.reindrairawan.organisasimahasiswa.presentation.dashboard.search
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -13,10 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dealjava.dealjava.ui.home.search.RecentlyAdapter
 import com.google.android.material.chip.Chip
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.reindrairawan.organisasimahasiswa.R
-import com.reindrairawan.organisasimahasiswa.data.DummyData
 import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedResponse
 import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryKegiatanRequest
 import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryPencarianResponse
@@ -31,7 +30,6 @@ import com.reindrairawan.organisasimahasiswa.presentation.common.extension.visib
 import com.reindrairawan.organisasimahasiswa.presentation.dashboard.setHistoryKegiatan.SetHistoryKegiatanViewModel
 import com.reindrairawan.organisasimahasiswa.presentation.dashboard.setHistoryKegiatan.SetHistoryKegiatanViewModel.SetHistoryKegiatanState
 
-import com.reindrairawan.organisasimahasiswa.utils.TinyDB
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -62,17 +60,18 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivitySearchBinding.inflate(layoutInflater)
         window.statusBarColor = ContextCompat.getColor(this, R.color.white);
-        setContentView(_binding!!.root)
+        setContentView(binding.root)
 
-        viewModelhistory.fetchSearchKegiatan(prefs.getIdMahasiswa())
+
         viewModel.fetchAllKegiatan()
-        observe()
+        viewModelhistory.fetchSearchKegiatan(prefs.getIdMahasiswa())
         observeHistory()
+        observe()
         observeSetHistory()
         setUpRecyclerView()
         actionView()
+
     }
 
     private fun observeSetHistory() {
@@ -102,6 +101,8 @@ class SearchActivity : AppCompatActivity() {
     private fun observeHistory() {
         observeStateHistory()
         observeHistoryPencarian()
+
+
     }
 
     private fun observeHistoryPencarian() {
@@ -111,9 +112,19 @@ class SearchActivity : AppCompatActivity() {
             }.launchIn(lifecycleScope)
     }
 
+
     private fun handleHistory(history: List<HistoryKegiatanEntity>) {
         history.forEach {
-            binding!!.chipHistory.addView(createTagChip(this, it))
+            Log.d("handleHistorya: ", arrayHistory.size.toString())
+            if (arrayHistory.isEmpty()) {
+                arrayHistory = history
+//                arrayHistory.takeLast(3)
+                for (item in arrayHistory.take(3)) {
+                    Log.d("handleHistory: ", item.judul)
+                    binding!!.chipHistory.addView(createTagChip(this, item))
+
+                }
+            }
         }
     }
 
@@ -133,11 +144,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun actionView() {
-        binding!!.imgBack.setOnClickListener {
+        binding.imgBack.setOnClickListener {
             finish()
         }
 
-        binding!!.searchView.setOnQueryTextListener(object :
+        binding.searchView.setOnQueryTextListener(object :
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
 //                getKegiatanAdapter.filter.filter(query)
@@ -167,7 +178,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun handleKegiatan(kegiatan: List<KegiatanEntity>) {
-        binding!!.rvRecently.adapter.let {
+        binding.rvRecently.adapter.let {
             if (it is GetKegiatanAdapter) {
                 viewModel.fetchAllKegiatan()
                 it.setData(kegiatan)
@@ -191,9 +202,9 @@ class SearchActivity : AppCompatActivity() {
 
     private fun handleLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding!!.loadingProgressBar.visible()
+            binding.loadingProgressBar.visible()
         } else {
-            binding!!.loadingProgressBar.gone()
+            binding.loadingProgressBar.gone()
         }
     }
 
@@ -214,8 +225,8 @@ class SearchActivity : AppCompatActivity() {
             }
 
         })
-        binding!!.rvRecently.apply {
-            binding!!.rvRecently.visible()
+        binding.rvRecently.apply {
+            binding.rvRecently.visible()
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             setHasFixedSize(true)
             adapter = getKegiatanAdapter
@@ -228,29 +239,5 @@ class SearchActivity : AppCompatActivity() {
             setChipBackgroundColorResource(R.color.color_grey_light)
             setTextColor(ContextCompat.getColor(context, R.color.relative))
         }
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        showToast("destroy")
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        showToast("restart")
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-        showToast("pause")
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        showToast("resume")
-
     }
 }

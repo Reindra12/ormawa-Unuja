@@ -1,5 +1,6 @@
 package com.reindrairawan.organisasimahasiswa.presentation.dashboard.search
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.reindrairawan.organisasimahasiswa.domain.common.base.BaseResult
