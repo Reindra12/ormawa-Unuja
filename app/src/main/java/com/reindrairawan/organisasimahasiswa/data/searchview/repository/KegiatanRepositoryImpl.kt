@@ -31,8 +31,6 @@ class KegiatanRepositoryImpl @Inject constructor(private val kegiatanApi: Kegiat
                         HistoryKegiatanEntity(
                             historyPencarian.id,
                             historyPencarian.judul,
-                            historyPencarian.waktu,
-
                             )
                     )
                 }
@@ -90,7 +88,6 @@ class KegiatanRepositoryImpl @Inject constructor(private val kegiatanApi: Kegiat
                 val historyKegiatanEntity = HistoryKegiatanEntity(
                     body.data?.id!!,
                     body.data?.judul!!,
-                    body.data?.waktu!!
                 )
 
                 emit(BaseResult.Success(historyKegiatanEntity))

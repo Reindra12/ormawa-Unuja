@@ -33,6 +33,10 @@ import com.reindrairawan.organisasimahasiswa.presentation.dashboard.setHistoryKe
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -54,6 +58,14 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var getKegiatanAdapter: GetKegiatanAdapter
     var recentlyEventEntity: ArrayList<RecentlyEventEntity> = arrayListOf()
     var arrayHistory: List<HistoryKegiatanEntity> = ArrayList()
+//    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+//    val current = LocalDateTime.now().format(formatter)
+
+    private val FILENAME_FORMAT = "dd-MMM-yyyy HH:mm"
+    val timeStamp: String = SimpleDateFormat(
+        FILENAME_FORMAT,
+        Locale.US
+    ).format(System.currentTimeMillis())
 
     @Inject
     lateinit var prefs: SharedPrefs
@@ -218,7 +230,6 @@ class SearchActivity : AppCompatActivity() {
                 viewModelSetHistory.setHistory(
                     HistoryKegiatanRequest(
                         kegiatans.nama_kegiatan,
-                        "2020-12-12",
                         prefs.getIdMahasiswa()
                     )
                 )
