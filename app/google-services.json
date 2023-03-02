@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "643242822085",
+    "project_id": "ormawa-2b24b",
+    "storage_bucket": "ormawa-2b24b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:643242822085:android:f9c7149a7f2364a25363ac",
+        "android_client_info": {
+          "package_name": "com.reindrairawan.organisasimahasiswa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "643242822085-n3tsmcvrf6e85nh65avggfc3u96ea4t8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.reindrairawan.organisasimahasiswa",
+            "certificate_hash": "948d4e8be95d38e95414decd5d36dcbb9c53b180"
+          }
+        },
+        {
+          "client_id": "643242822085-88gvjqji4v6vspn93tnfv0a2v6uv322i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwdTZV_L1ZTyQ1U4oXalpWaEUYgh2jIV8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "643242822085-88gvjqji4v6vspn93tnfv0a2v6uv322i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
