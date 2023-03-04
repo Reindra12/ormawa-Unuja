@@ -6,6 +6,7 @@
 
     <uses-feature android:name="android.hardware.camera" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -37,6 +38,20 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <!-- [START firebase_service] -->
+        <service
+            android:name=".presentation.notification.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- [END firebase_service] -->
+
+<!--        <meta-data-->
+<!--            android:name="com.google.firebase.messaging.default_notification_channel_id"-->
+<!--            android:value="@string/default_notification_channel_id" />-->
+<!--        -->
         <activity
             android:name=".presentation.dashboard.search.SearchActivity"
             android:theme="@style/Theme.OrganisasiMahasiswa.NoActionBar"
