@@ -1,5 +1,7 @@
 package com.reindrairawan.organisasimahasiswa.data.login.repository
 
+import android.util.Log
+import com.google.firebase.inappmessaging.internal.Logging.TAG
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedResponse
@@ -22,9 +24,10 @@ class LoginRepositoryImpl @Inject constructor(private val loginApi: LoginApi) : 
                 val loginEntity = LoginEntity(
                     body?.data?.id!!,
                     body.data?.name!!,
-                    body.data?.email!!,
+                    body.data?.user!!,
                     body.data?.token!!
                 )
+                Log.d(TAG, "login: "+ body.errors.toString())
                 emit(BaseResult.Success(loginEntity))
 
             } else {
