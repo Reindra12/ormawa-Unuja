@@ -218,10 +218,10 @@ class DashboardFragment : Fragment() {
 
     private fun handleLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding.loadingProgressBar?.visible()
+            binding.loadingProgressBar.visible()
 
         } else {
-            binding.loadingProgressBar?.gone()
+            binding.loadingProgressBar.gone()
         }
     }
 
