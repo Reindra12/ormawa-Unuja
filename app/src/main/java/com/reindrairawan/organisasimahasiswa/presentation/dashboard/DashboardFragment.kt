@@ -35,6 +35,7 @@ import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showT
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.visible
 import com.reindrairawan.organisasimahasiswa.presentation.dashboard.jenisKegiatan.ShowImageActivity
 import com.reindrairawan.organisasimahasiswa.presentation.dashboard.search.SearchActivity
+import com.reindrairawan.organisasimahasiswa.presentation.login.LoginActivity
 import com.reindrairawan.organisasimahasiswa.presentation.main.IntroActivity
 import com.reindrairawan.organisasimahasiswa.utils.cameraX.CameraActivity
 import com.reindrairawan.organisasimahasiswa.utils.cameraX.reduceFileImage
@@ -232,7 +233,6 @@ class DashboardFragment : Fragment() {
         }
     }
 
-
     private fun handleLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.loadingProgressBar.visible()
@@ -244,12 +244,7 @@ class DashboardFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         val mAdapter = DashboardAdapter(mutableListOf())
-//        mAdapter.setItemTapListener(object : DashboardAdapter.OnItemTap {
-//            override fun onTap(categories: CategoriesEntity) {
-//                val b = bundleOf("id" to categories.id)
-//
-//            }
-//        })
+
         binding.categoriesRecyclerView.apply {
             binding.categoriesRecyclerView.visible()
             layoutManager = LinearLayoutManager(context)
@@ -266,13 +261,13 @@ class DashboardFragment : Fragment() {
     }
 
     private fun goToLoginActivity() {
-        startActivity(Intent(requireContext(), IntroActivity::class.java))
+        startActivity(Intent(requireContext(), LoginActivity::class.java))
         activity?.finish()
     }
 
     override fun onStart() {
         super.onStart()
-//        checkIsLoggedIn()
+        checkIsLoggedIn()
     }
 
 }
