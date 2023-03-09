@@ -15,4 +15,6 @@
     <string name="recently_viewed">" Baru saja dilihat"</string>
     <string name="search">Search</string>
     <string name="msg_token_fmt">token</string>
+    <string name="message_subscribed">Subscribed to topic</string>
+    <string name="message_subscribe_failed">Failed to subscribe to topic</string>
 </resources>

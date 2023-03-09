@@ -44,7 +44,6 @@ class JenisKegiatanViewModel @Inject constructor(private val jenisKegiatanUseCas
 
                     }
                 }
-
         }
     }
 

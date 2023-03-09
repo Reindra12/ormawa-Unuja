@@ -14,8 +14,8 @@ interface CategoriesApi {
     @GET("jenis_kegiatan")
     suspend fun getCategories(): Response<WrappedListResponse<CategoriesResponse>>
 
-
     @Multipart
     @POST("jenis_kegiatan")
     suspend fun tambahJenisKegiatan(@Part file: MultipartBody.Part, @Part("nama_jenis_kegiatan") namaJenisKegiatan:RequestBody): Response<WrappedResponse<JenisKegiatanResponse>>
+
 }

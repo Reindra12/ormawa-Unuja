@@ -23,6 +23,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.messaging.FirebaseMessaging
 
 import com.reindrairawan.organisasimahasiswa.R
 import com.reindrairawan.organisasimahasiswa.databinding.FragmentDashboardBinding
@@ -47,6 +48,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class DashboardFragment : Fragment() {
 
+    private val TOPIC = "breakfast"
     private lateinit var binding: FragmentDashboardBinding
     private val viewModel: DashboardViewModel by viewModels()
     private var getFile: File? = null
@@ -116,9 +118,9 @@ class DashboardFragment : Fragment() {
     }
 
     private fun searchData() {
-      binding.searchImageview.setOnClickListener {
-          startActivity(Intent(requireContext(), SearchActivity::class.java))
-      }
+        binding.searchImageview.setOnClickListener {
+            startActivity(Intent(requireContext(), SearchActivity::class.java))
+        }
     }
 
     private fun addCategory() {
@@ -126,12 +128,27 @@ class DashboardFragment : Fragment() {
             requireActivity().AwesomeDialogMessage(requireActivity(), "Camera", "Gallery") {
                 if (it.equals("Camera")) {
                     startCameraX()
+                    subscribeTopic()
                 } else {
                     startGallery()
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(TOPIC)
                 }
             }
         }
 
+    }
+
+    private fun subscribeTopic() {
+        // [START subscribe_topic]
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
+            .addOnCompleteListener { task ->
+                var message = getString(R.string.message_subscribed)
+                if (!task.isSuccessful) {
+                    message = getString(R.string.message_subscribe_failed)
+                }
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+        // [END subscribe_topics]
     }
 
     private fun startCameraX() {
@@ -255,7 +272,7 @@ class DashboardFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        checkIsLoggedIn()
+//        checkIsLoggedIn()
     }
 
 }

@@ -6,11 +6,13 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.messaging.FirebaseMessaging
 import com.reindrairawan.organisasimahasiswa.R
 import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedResponse
 import com.reindrairawan.organisasimahasiswa.data.dashboard.remote.dto.JenisKegiatanResponse
@@ -36,6 +38,7 @@ import java.io.File
 
 @AndroidEntryPoint
 class ShowImageActivity : AppCompatActivity() {
+    var TOPIC = "topic"
     lateinit var binding: ActivityShowImageBinding
     private val viewModel: JenisKegiatanViewModel by viewModels()
     private var getbitmap: Bitmap? = null
@@ -80,6 +83,7 @@ class ShowImageActivity : AppCompatActivity() {
     }
 
     private fun handleSuccess(jenisKegiatanEntity: JenisKegiatanEntity) {
+        subscribeTopic()
         goToMainActivity()
 
     }
@@ -171,5 +175,18 @@ class ShowImageActivity : AppCompatActivity() {
                 finish()
             }
         }.start()
+    }
+
+    private fun subscribeTopic() {
+        // [START subscribe_topic]
+        FirebaseMessaging.getInstance().subscribeToTopic(TOPIC)
+            .addOnCompleteListener { task ->
+                var message = getString(R.string.message_subscribed)
+                if (!task.isSuccessful) {
+                    message = getString(R.string.message_subscribe_failed)
+                }
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            }
+        // [END subscribe_topics]
     }
 }

@@ -6,30 +6,41 @@ import com.reindrairawan.organisasimahasiswa.data.dashboard.repository.Categorie
 import javax.inject.Inject
 
 @Suppress("UNCHECKED_CAST")
-class SharedPrefs (private val context: Context) {
+class SharedPrefs(private val context: Context) {
     companion object {
         private const val PREF = "Ormawa"
         private const val PREF_TOKEN = "user_Token"
         private const val PREF_USERNAME = "username"
+        private const val PREF_ID = "id"
 
     }
+
     fun init(context: Context) {
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
     }
+
     private val sharedPref: SharedPreferences =
         context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
 
-    fun saveUsername(username: String){
+    fun saveUsername(username: String) {
         put(PREF_USERNAME, username)
     }
 
-    fun getUsername(): String{
+    fun getUsername(): String {
         return get(PREF_USERNAME, String::class.java)
     }
 
     fun saveToken(token: String) {
         put(PREF_TOKEN, token)
 
+    }
+
+    fun saveIdMahasiswa(key: Int) {
+        put(PREF_ID, key)
+    }
+
+    fun getIdMahasiswa(): Int {
+        return get(PREF_ID, Int::class.java)
     }
 
     fun getToken(): String {

@@ -25,12 +25,14 @@ import com.reindrairawan.organisasimahasiswa.R
 import com.reindrairawan.organisasimahasiswa.data.account.remote.dto.UpdateTokenRequest
 
 import com.reindrairawan.organisasimahasiswa.databinding.ActivityMainBinding
+import com.reindrairawan.organisasimahasiswa.infra.utils.SharedPrefs
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.*
 import com.reindrairawan.organisasimahasiswa.presentation.dashboard.account.AccountViewModel
 import com.reindrairawan.organisasimahasiswa.presentation.dashboard.account.AccountViewModelState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -40,6 +42,9 @@ class MainActivity : AppCompatActivity() {
     }
     private val viewModel: AccountViewModel by viewModels()
 
+    @Inject
+    lateinit var  pref: SharedPrefs
+
 
     @RequiresApi(Build.VERSION_CODES.O)
 
@@ -48,26 +53,28 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        pref.getIdMahasiswa()
+        Toast.makeText(this, ""+pref.getIdMahasiswa(), Toast.LENGTH_SHORT).show()
         val hostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = hostFragment.navController
         val navView = binding.bottomNavView
         navView.setupWithNavController(navController)
 
-        askNotificationPermission()
-        getFCMToken()
+//        askNotificationPermission()
+//        getFCMToken()
         observeState()
 
     }
 
     private fun observeState() {
         viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach { state-> handleState(state) }
+            .onEach { state -> handleState(state) }
             .launchIn(lifecycleScope)
     }
 
     private fun handleState(state: AccountViewModelState) {
-        when(state){
+        when (state) {
             is AccountViewModelState.SusccessUpdate -> showToast("update coy")
             is AccountViewModelState.Init -> Unit
             is AccountViewModelState.IsLoading -> handleLoading(state.isLoading)
@@ -79,66 +86,5 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//    fun updateToken(updateTokenRequest: UpdateTokenRequest, id:String) {
-//        viewModel.updateAccount(updateTokenRequest, id)
-//    }
-
-    private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-
-            // FCM SDK (and your app) can post notifications.
-
-        } else {
-            // TODO: Inform user that that your app will not show notifications.
-        }
-    }
-
-    private fun getFCMToken() {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            // Get new FCM registration token
-            val token = task.result
-
-            viewModel.updateAccount(UpdateTokenRequest(token), "1")
-
-            // Log and toast
-//            val msg = getString(R.string.msg_token_fmt, token)
-            Log.d(TAG, token)
-            Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
-        })
-    }
-
-
-    @RequiresApi(Build.VERSION_CODES.M)
-    private fun askNotificationPermission() {
-        // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            mutableStateOf(
-                ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.POST_NOTIFICATIONS
-                ) == PackageManager.PERMISSION_GRANTED
-            )
-            if (ContextCompat.checkSelfPermission(
-                    this, Manifest.permission.POST_NOTIFICATIONS
-                ) == PackageManager.PERMISSION_GRANTED
-            ) else mutableStateOf(true)
-            // FCM SDK (and your app) can post notifications.
-//            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-//                // TODO: display an educational UI explaining to the user the features that will be enabled
-//                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
-//                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
-//                //       If the user selects "No thanks," allow the user to continue without notifications.
-//            } else {
-            // Directly ask for the permission
-            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
-    }
 }
 
