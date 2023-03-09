@@ -40,51 +40,21 @@ class MainActivity : AppCompatActivity() {
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
-    private val viewModel: AccountViewModel by viewModels()
-
-    @Inject
-    lateinit var  pref: SharedPrefs
-
 
     @RequiresApi(Build.VERSION_CODES.O)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)
 
-        pref.getIdMahasiswa()
-        Toast.makeText(this, ""+pref.getIdMahasiswa(), Toast.LENGTH_SHORT).show()
         val hostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = hostFragment.navController
         val navView = binding.bottomNavView
         navView.setupWithNavController(navController)
 
-//        askNotificationPermission()
-//        getFCMToken()
-        observeState()
-
     }
 
-    private fun observeState() {
-        viewModel.state.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
-            .onEach { state -> handleState(state) }
-            .launchIn(lifecycleScope)
-    }
-
-    private fun handleState(state: AccountViewModelState) {
-        when (state) {
-            is AccountViewModelState.SusccessUpdate -> showToast("update coy")
-            is AccountViewModelState.Init -> Unit
-            is AccountViewModelState.IsLoading -> handleLoading(state.isLoading)
-            is AccountViewModelState.ShowToast -> showToast(state.message)
-        }
-    }
-
-    private fun handleLoading(loading: Boolean) {
-
-    }
 
 }
 
