@@ -55,8 +55,7 @@ class RegisterActivity : AppCompatActivity() {
             is RegisterViewModel.RegisterActivityState.IsLoading -> handleLoading(state.isLoading)
             is RegisterViewModel.RegisterActivityState.Init -> Unit
             is RegisterViewModel.RegisterActivityState.SuccessRegister -> handleSuccessRegister(
-                state.registerEntity
-            )
+                state.registerEntity)
             is RegisterViewModel.RegisterActivityState.ShowToast -> showToast(state.message)
             is RegisterViewModel.RegisterActivityState.ErrorRegister -> handleErrorRegister(state.rawResponse)
         }

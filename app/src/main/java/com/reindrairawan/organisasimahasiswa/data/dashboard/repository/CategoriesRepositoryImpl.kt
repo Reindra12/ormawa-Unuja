@@ -76,6 +76,4 @@ class CategoriesRepositoryImpl @Inject constructor(private val categoriesApi: Ca
             }
         }
     }
-
-
 }
