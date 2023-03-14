@@ -1,11 +1,9 @@
 package com.reindrairawan.organisasimahasiswa.presentation.dashboard.search
 
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -17,12 +15,12 @@ import com.dealjava.dealjava.ui.home.search.RecentlyAdapter
 import com.google.android.material.chip.Chip
 import com.reindrairawan.organisasimahasiswa.R
 import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedResponse
-import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryKegiatanRequest
-import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryPencarianResponse
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.HistoryKegiatanRequest
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.HistoryPencarianResponse
 import com.reindrairawan.organisasimahasiswa.databinding.ActivitySearchBinding
 import com.reindrairawan.organisasimahasiswa.domain.dashboard.jenisKegiatan.entity.RecentlyEventEntity
-import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.HistoryKegiatanEntity
-import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.KegiatanEntity
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.entity.HistoryKegiatanEntity
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.entity.KegiatanEntity
 import com.reindrairawan.organisasimahasiswa.infra.utils.SharedPrefs
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.gone
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showToast
@@ -34,8 +32,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList

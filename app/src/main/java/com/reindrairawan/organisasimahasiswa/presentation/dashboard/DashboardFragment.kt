@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.snapshots.Snapshot.Companion.observe
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.contentValuesOf
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -28,13 +29,16 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.reindrairawan.organisasimahasiswa.R
 import com.reindrairawan.organisasimahasiswa.databinding.FragmentDashboardBinding
 import com.reindrairawan.organisasimahasiswa.domain.dashboard.category.entity.CategoriesEntity
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.entity.KegiatanEntity
 import com.reindrairawan.organisasimahasiswa.infra.utils.SharedPrefs
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.AwesomeDialogMessage
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.gone
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showToast
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.visible
 import com.reindrairawan.organisasimahasiswa.presentation.dashboard.jenisKegiatan.ShowImageActivity
+import com.reindrairawan.organisasimahasiswa.presentation.dashboard.kegiatan.KegiatanActivity
 import com.reindrairawan.organisasimahasiswa.presentation.dashboard.search.SearchActivity
+import com.reindrairawan.organisasimahasiswa.presentation.login.LoginActivity
 import com.reindrairawan.organisasimahasiswa.presentation.main.IntroActivity
 import com.reindrairawan.organisasimahasiswa.utils.cameraX.CameraActivity
 import com.reindrairawan.organisasimahasiswa.utils.cameraX.reduceFileImage
@@ -245,12 +249,14 @@ class DashboardFragment : Fragment() {
 
     private fun setUpRecyclerView() {
         val mAdapter = DashboardAdapter(mutableListOf())
-//        mAdapter.setItemTapListener(object : DashboardAdapter.OnItemTap {
-//            override fun onTap(categories: CategoriesEntity) {
-//                val b = contebundleOf("id" to categories.id)
-//
-//            }
-//        })
+        mAdapter.setItemTapListener(object : DashboardAdapter.OnItemTap {
+            override fun onTap(categories: CategoriesEntity) {
+                val b = contentValuesOf("id" to categories.id)
+                Toast.makeText(context, "" + b, Toast.LENGTH_SHORT).show()
+                startActivity(Intent(requireContext(), KegiatanActivity::class.java))
+
+            }
+        })
         binding.categoriesRecyclerView.apply {
             binding.categoriesRecyclerView.visible()
             layoutManager = LinearLayoutManager(context)
@@ -267,13 +273,13 @@ class DashboardFragment : Fragment() {
     }
 
     private fun goToLoginActivity() {
-        startActivity(Intent(requireContext(), IntroActivity::class.java))
+        startActivity(Intent(requireContext(), LoginActivity::class.java))
         activity?.finish()
     }
 
     override fun onStart() {
         super.onStart()
-//        checkIsLoggedIn()
+        checkIsLoggedIn()
     }
 
 }

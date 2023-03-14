@@ -1,12 +1,10 @@
 package com.reindrairawan.organisasimahasiswa.presentation.dashboard.search
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.reindrairawan.organisasimahasiswa.domain.common.base.BaseResult
-import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.HistoryKegiatanEntity
-import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.KegiatanEntity
-import com.reindrairawan.organisasimahasiswa.domain.searchview.usecase.SearchKegiatanUseCase
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.entity.HistoryKegiatanEntity
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.usecase.SearchKegiatanUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

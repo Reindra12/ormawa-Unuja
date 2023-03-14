@@ -1,11 +1,11 @@
-package com.reindrairawan.organisasimahasiswa.presentation.dashboard.search
+package com.reindrairawan.organisasimahasiswa.presentation.dashboard.kegiatan
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.reindrairawan.organisasimahasiswa.domain.common.base.BaseResult
 import com.reindrairawan.organisasimahasiswa.domain.kegiatan.entity.KegiatanEntity
-import com.reindrairawan.organisasimahasiswa.domain.kegiatan.usecase.GetAllKegiatanUseCase
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.usecase.KegiatanByIdJenisUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,20 +15,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class KegiatanViewModel @Inject constructor(private val getAllKegiatanUseCase: GetAllKegiatanUseCase) :
+class KegiatanByIdJenisViewModel @Inject constructor(private val kegiatanUseCase: KegiatanByIdJenisUseCase) :
     ViewModel() {
-    private val state = MutableStateFlow<KegiatanState>(KegiatanState.Init)
-    val mState: StateFlow<KegiatanState> get() = state
-
+    private val state = MutableStateFlow<KegiatanByIdJenisState>(KegiatanByIdJenisState.Init)
+    val mState: StateFlow<KegiatanByIdJenisState> get() = state
     private val kegiatan = MutableStateFlow<List<KegiatanEntity>>(mutableListOf())
     val mKegiatan: StateFlow<List<KegiatanEntity>> get() = kegiatan
 
-     fun fetchAllKegiatan() {
+    fun fetchKegiatanById(id: Int) {
         viewModelScope.launch {
-            getAllKegiatanUseCase.invoke()
-                .onStart {
-                    setLoading()
-                }
+            kegiatanUseCase.invoke(id)
+                .onStart { setLoading() }
                 .catch { exception ->
                     hideLoading()
                     showToast(exception.message.toString())
@@ -38,11 +35,11 @@ class KegiatanViewModel @Inject constructor(private val getAllKegiatanUseCase: G
                     when (result) {
                         is BaseResult.Success -> {
                             kegiatan.value = result.data
-                            Log.d("TAG", "TAG: " + result.data)
+                            Log.d("YOLO", "fetched: "+result.data)
+
                         }
                         is BaseResult.Error -> {
                             showToast(result.rawResponse.message)
-                            Log.d("TAG", "TAG: " + result.rawResponse.message)
                         }
                     }
                 }
@@ -50,26 +47,21 @@ class KegiatanViewModel @Inject constructor(private val getAllKegiatanUseCase: G
     }
 
 
-
     private fun showToast(message: String) {
-        state.value = KegiatanState.ShowToast(message)
+        state.value = KegiatanByIdJenisState.ShowToast(message)
     }
 
     private fun hideLoading() {
-        state.value = KegiatanState.IsLoading(false)
-
+        state.value = KegiatanByIdJenisState.IsLoading(false)
     }
 
     private fun setLoading() {
-        state.value = KegiatanState.IsLoading(true)
+        state.value = KegiatanByIdJenisState.IsLoading(true)
     }
-
-
 }
 
-sealed class KegiatanState {
-    object Init : KegiatanState()
-    data class IsLoading(val isLoading: Boolean) : KegiatanState()
-    data class ShowToast(val message: String) : KegiatanState()
-
+sealed class KegiatanByIdJenisState {
+    object Init : KegiatanByIdJenisState()
+    data class IsLoading(val isLoading: Boolean) : KegiatanByIdJenisState()
+    data class ShowToast(val message: String) : KegiatanByIdJenisState()
 }

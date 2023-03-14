@@ -3,13 +3,11 @@ package com.reindrairawan.organisasimahasiswa.presentation.dashboard.setHistoryK
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedResponse
-import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryKegiatanRequest
-import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryPencarianResponse
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.HistoryKegiatanRequest
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.HistoryPencarianResponse
 import com.reindrairawan.organisasimahasiswa.domain.common.base.BaseResult
-import com.reindrairawan.organisasimahasiswa.domain.register.entity.RegisterEntity
-import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.HistoryKegiatanEntity
-import com.reindrairawan.organisasimahasiswa.domain.searchview.usecase.SetHistoryKegiatanUseCase
-import com.reindrairawan.organisasimahasiswa.presentation.register.RegisterViewModel
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.entity.HistoryKegiatanEntity
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.usecase.SetHistoryKegiatanUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

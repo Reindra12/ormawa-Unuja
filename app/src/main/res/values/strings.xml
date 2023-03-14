@@ -49,4 +49,11 @@
     <string name="msg_token_fmt">token</string>
     <string name="message_subscribed">Subscribed to topic</string>
     <string name="message_subscribe_failed">Failed to subscribe to topic</string>
+    <string name="nama_kegiatan">Ormawa</string>
+    <string name="deskripsi_kegiatan">diskripsi</string>
+    <string name="tempat_kegiatan">Paiton</string>
+    <string name="hint_login_username_edit_text">Username</string>
+    <string name="belummemiliki">Apakah anda belum memiliki akun?</string>
+    <string name="daftar">Daftar</string>
+    <string name="daftarkegiatan">Daftar Kegiatan</string>
 </resources>

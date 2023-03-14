@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.reindrairawan.organisasimahasiswa.BuildConfig
 import com.reindrairawan.organisasimahasiswa.databinding.ItemSearchKegiatanBinding
-import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.KegiatanEntity
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.entity.KegiatanEntity
 import java.util.*
 
 class GetKegiatanAdapter(
