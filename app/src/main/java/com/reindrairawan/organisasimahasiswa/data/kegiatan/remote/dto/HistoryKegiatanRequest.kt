@@ -1,4 +1,4 @@
-package com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto
+package com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto
 
 import com.google.gson.annotations.SerializedName
 

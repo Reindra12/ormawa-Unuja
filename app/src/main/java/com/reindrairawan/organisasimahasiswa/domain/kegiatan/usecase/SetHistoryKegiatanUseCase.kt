@@ -1,8 +1,8 @@
 package com.reindrairawan.organisasimahasiswa.domain.searchview.usecase
 
 import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedResponse
-import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryKegiatanRequest
-import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryPencarianResponse
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.HistoryKegiatanRequest
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.HistoryPencarianResponse
 import com.reindrairawan.organisasimahasiswa.domain.common.base.BaseResult
 import com.reindrairawan.organisasimahasiswa.domain.searchview.KegiatanRepository
 import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.HistoryKegiatanEntity
