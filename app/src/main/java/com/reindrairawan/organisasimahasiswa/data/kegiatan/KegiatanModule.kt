@@ -1,9 +1,9 @@
-package com.reindrairawan.organisasimahasiswa.data.searchview
+package com.reindrairawan.organisasimahasiswa.data.kegiatan
 
 import com.reindrairawan.organisasimahasiswa.data.common.module.NetworkModule
-import com.reindrairawan.organisasimahasiswa.data.searchview.remote.api.KegiatanApi
-import com.reindrairawan.organisasimahasiswa.data.searchview.repository.KegiatanRepositoryImpl
-import com.reindrairawan.organisasimahasiswa.domain.searchview.KegiatanRepository
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.api.KegiatanApi
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.repository.KegiatanRepositoryImpl
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.KegiatanRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

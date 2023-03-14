@@ -1,25 +1,58 @@
-package com.reindrairawan.organisasimahasiswa.data.searchview.repository
+package com.reindrairawan.organisasimahasiswa.data.kegiatan.repository
 
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedListResponse
 import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedResponse
-import com.reindrairawan.organisasimahasiswa.data.register.remote.dto.RegisterResponse
-import com.reindrairawan.organisasimahasiswa.data.searchview.remote.api.KegiatanApi
-import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryKegiatanRequest
-import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.HistoryPencarianResponse
-import com.reindrairawan.organisasimahasiswa.data.searchview.remote.dto.KegiatanResponse
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.api.KegiatanApi
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.HistoryKegiatanRequest
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.HistoryPencarianResponse
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.KegiatanResponse
 import com.reindrairawan.organisasimahasiswa.domain.common.base.BaseResult
-import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.KegiatanEntity
-import com.reindrairawan.organisasimahasiswa.domain.searchview.KegiatanRepository
-import com.reindrairawan.organisasimahasiswa.domain.searchview.entity.HistoryKegiatanEntity
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.entity.KegiatanEntity
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.KegiatanRepository
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.entity.HistoryKegiatanEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class KegiatanRepositoryImpl @Inject constructor(private val kegiatanApi: KegiatanApi) :
     KegiatanRepository {
+    override suspend fun kegiatanByIdJenis(id: Int): Flow<BaseResult<List<KegiatanEntity>, WrappedListResponse<KegiatanResponse>>> {
+        return flow {
+            val response = kegiatanApi.kegiatanByIdJenis(id)
+            if (response.isSuccessful){
+                val body = response.body()
+                val kegiatan = mutableListOf<KegiatanEntity>()
+                body!!.data?.forEach { fetchkegiatan->
+                    kegiatan.add(
+                        KegiatanEntity(
+                            fetchkegiatan.id_kegiatan,
+                            fetchkegiatan.nama_kegiatan,
+                            fetchkegiatan.diskripsi_kegiatan,
+                            fetchkegiatan.gambar_kegiatan,
+                            fetchkegiatan.jam_kegiatan,
+                            fetchkegiatan.tgl_kegiatan
+
+                        )
+                    )
+                }
+                emit(BaseResult.Success(kegiatan))
+
+            }else{
+                val type= object: TypeToken<WrappedListResponse<KegiatanResponse>>() {}.type
+                val err = Gson().fromJson<WrappedListResponse<KegiatanResponse>>(
+                    response.errorBody()!!.charStream(),type
+                )!!
+                err.code = response.code()
+                emit(BaseResult.Error(err))
+                Log.d("searchKegiatan", err.toString())
+
+            }
+        }
+    }
+
     override suspend fun searchKegiatan(id: Int): Flow<BaseResult<List<HistoryKegiatanEntity>, WrappedListResponse<HistoryPencarianResponse>>> {
         return flow {
             val response = kegiatanApi.searchKegiatan(id)

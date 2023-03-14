@@ -1,4 +1,4 @@
-package com.reindrairawan.organisasimahasiswa.domain.searchview.entity
+package com.reindrairawan.organisasimahasiswa.domain.kegiatan.entity
 
 data class HistoryKegiatanEntity(
     var id: Int,
