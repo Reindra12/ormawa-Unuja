@@ -252,8 +252,9 @@ class DashboardFragment : Fragment() {
         mAdapter.setItemTapListener(object : DashboardAdapter.OnItemTap {
             override fun onTap(categories: CategoriesEntity) {
                 val b = contentValuesOf("id" to categories.id)
-                Toast.makeText(context, "" + b, Toast.LENGTH_SHORT).show()
-                startActivity(Intent(requireContext(), KegiatanActivity::class.java))
+                val intent = Intent(requireContext(), KegiatanActivity::class.java)
+                intent.putExtra("id", categories.id)
+                startActivity(intent)
 
             }
         })

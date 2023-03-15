@@ -20,8 +20,8 @@ plugins {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField 'String', 'API_BASE_URL', '"http://192.168.1.38:8000/api/"'
-        buildConfigField 'String', 'BASE_ASSETS', '"http://192.168.1.38:8000/assets/images/"'
+        buildConfigField 'String', 'API_BASE_URL', '"http://192.168.1.22:8000/api/"'
+        buildConfigField 'String', 'BASE_ASSETS', '"http://192.168.1.22:8000/assets/images/"'
 
         vectorDrawables {
             useSupportLibrary true
@@ -126,4 +126,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-inappmessaging-display-ktx'
 
+
+
+    configurations.matching { it.name == '_internal_aapt2_binary' }.all { config ->
+        config.resolutionStrategy.eachDependency { details ->
+            details.useVersion("3.3.2-5309881")
+        }
+    }
 }
