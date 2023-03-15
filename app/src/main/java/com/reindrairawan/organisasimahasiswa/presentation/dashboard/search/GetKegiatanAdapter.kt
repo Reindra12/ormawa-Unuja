@@ -57,6 +57,9 @@ class GetKegiatanAdapter(
             Glide.with(itemView.context)
                 .load(BuildConfig.BASE_ASSETS + "kegiatan/" + kegiatans.gambar_kegiatan)
                 .into(itemBinding.kegiatanImageview)
+            itemBinding.jamKegiatanTv.text = kegiatans.jam_kegiatan
+            itemBinding.tglKegiatanTv.text = kegiatans.tgl_kegiatan
+            itemBinding.tempatKegiatanTv.text = kegiatans.tempat
 
             itemBinding.root.setOnClickListener {
                 onTapListener?.onTap(kegiatans)
