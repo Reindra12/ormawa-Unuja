@@ -10,7 +10,8 @@ data class KegiatanResponse(
     @SerializedName("tgl_kegiatan") var tgl_kegiatan: String,
     @SerializedName("jam_kegiatan") var jam_kegiatan: String,
     @SerializedName("id_ormawa") var id_ormawa: Int,
-    @SerializedName("id_jenis_kegiatan") var id_kegiatan: Int
+    @SerializedName("id_jenis_kegiatan") var id_kegiatan: Int,
+    @SerializedName("tempat") var tempat:String
 
 
 )

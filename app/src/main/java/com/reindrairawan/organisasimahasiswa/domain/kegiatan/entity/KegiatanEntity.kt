@@ -6,6 +6,7 @@ data class KegiatanEntity(
     var diskripsi_kegiatan: String,
     var gambar_kegiatan: String,
     val tgl_kegiatan: String,
-    val jam_kegiatan: String
+    val jam_kegiatan: String,
+    val tempat: String
 
     )

@@ -1,5 +1,6 @@
 package com.reindrairawan.organisasimahasiswa.presentation.dashboard.kegiatan
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.onEach
 class KegiatanActivity : AppCompatActivity() {
 
     private val viewModel: KegiatanByIdJenisViewModel by viewModels()
+    private var idJenisKegiatan: Int = 0
     private val binding: ActivityKegiatanBinding by lazy {
         ActivityKegiatanBinding.inflate(
             layoutInflater
@@ -37,6 +39,9 @@ class KegiatanActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
         setContentView(binding.root)
 
+        val bundle: Bundle? = intent.extras
+        idJenisKegiatan = bundle?.get("id") as Int
+
         observeKegiatan()
         setRecyclerview()
     }
@@ -44,15 +49,19 @@ class KegiatanActivity : AppCompatActivity() {
     private fun setRecyclerview() {
 
         kegiatanAdapter = GetKegiatanAdapter(this, mutableListOf())
-        kegiatanAdapter.setItemTapListener(object : GetKegiatanAdapter.OnItemTap{
+        kegiatanAdapter.setItemTapListener(object : GetKegiatanAdapter.OnItemTap {
             override fun onTap(kegiatans: KegiatanEntity) {
-                Toast.makeText(this@KegiatanActivity, ""+kegiatans.gambar_kegiatan, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@KegiatanActivity,
+                    "" + kegiatans.gambar_kegiatan,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
 
         binding.rvKegiatan.apply {
             binding.rvKegiatan.visible()
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             setHasFixedSize(true)
             adapter = kegiatanAdapter
         }
@@ -74,7 +83,7 @@ class KegiatanActivity : AppCompatActivity() {
     private fun handleKegiatan(kegiatan: List<KegiatanEntity>) {
         binding.rvKegiatan.adapter.let {
             if (it is GetKegiatanAdapter) {
-                viewModel.fetchKegiatanById(1)
+                viewModel.fetchKegiatanById(idJenisKegiatan)
                 it.setData(kegiatan)
             }
         }

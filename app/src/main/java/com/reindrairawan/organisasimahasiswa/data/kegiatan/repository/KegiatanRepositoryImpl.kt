@@ -32,8 +32,10 @@ class KegiatanRepositoryImpl @Inject constructor(private val kegiatanApi: Kegiat
                             fetchkegiatan.nama_kegiatan,
                             fetchkegiatan.diskripsi_kegiatan,
                             fetchkegiatan.gambar_kegiatan,
+                            fetchkegiatan.tgl_kegiatan,
                             fetchkegiatan.jam_kegiatan,
-                            fetchkegiatan.tgl_kegiatan
+                            fetchkegiatan.tempat
+
 
                         )
                     )
@@ -94,8 +96,10 @@ class KegiatanRepositoryImpl @Inject constructor(private val kegiatanApi: Kegiat
                             kegiatanResponse.nama_kegiatan,
                             kegiatanResponse.diskripsi_kegiatan,
                             kegiatanResponse.gambar_kegiatan,
+                            kegiatanResponse.tgl_kegiatan,
                             kegiatanResponse.jam_kegiatan,
-                            kegiatanResponse.tgl_kegiatan
+                            kegiatanResponse.tempat
+
                         )
                     )
                 }
