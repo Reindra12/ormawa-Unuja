@@ -1,19 +1,43 @@
 package com.reindrairawan.organisasimahasiswa.presentation.dashboard.search
 
 import android.content.Context
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.WindowManager
-import androidx.core.content.ContentProviderCompat.requireContext
+import android.util.Log
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dealjava.dealjava.ui.home.search.RecentlyAdapter
 import com.google.android.material.chip.Chip
 import com.reindrairawan.organisasimahasiswa.R
-import com.reindrairawan.organisasimahasiswa.data.DummyData
+import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedResponse
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.HistoryKegiatanRequest
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.HistoryPencarianResponse
 import com.reindrairawan.organisasimahasiswa.databinding.ActivitySearchBinding
+import com.reindrairawan.organisasimahasiswa.domain.dashboard.jenisKegiatan.entity.RecentlyEventEntity
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.entity.HistoryKegiatanEntity
+import com.reindrairawan.organisasimahasiswa.domain.kegiatan.entity.KegiatanEntity
+import com.reindrairawan.organisasimahasiswa.infra.utils.SharedPrefs
+import com.reindrairawan.organisasimahasiswa.presentation.common.extension.gone
+import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showToast
+import com.reindrairawan.organisasimahasiswa.presentation.common.extension.visible
+import com.reindrairawan.organisasimahasiswa.presentation.dashboard.setHistoryKegiatan.SetHistoryKegiatanViewModel
+import com.reindrairawan.organisasimahasiswa.presentation.dashboard.setHistoryKegiatan.SetHistoryKegiatanViewModel.SetHistoryKegiatanState
 
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import java.text.SimpleDateFormat
+import java.util.*
+import javax.inject.Inject
+import kotlin.collections.ArrayList
+
+
+@AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
 
     private val binding: ActivitySearchBinding by lazy {
@@ -21,53 +45,206 @@ class SearchActivity : AppCompatActivity() {
             layoutInflater
         )
     }
+
+    private val viewModel: KegiatanViewModel by viewModels()
+    private val viewModelhistory: SearchKegiatanViewModel by viewModels()
+    private val viewModelSetHistory: SetHistoryKegiatanViewModel by viewModels()
+
     private lateinit var recentlyAdapter: RecentlyAdapter
-    
-    private val dummyData = mutableListOf(
-        DummyData("Breakfast Buffet at Hotel Grandhika Iskandaryah Jakarta"),
-        DummyData("Breakfast Buffet at Hotel Grandhika Iskandaryah Jakarta"),
-        DummyData("Breakfast Buffet at Hotel Grandhika Iskandaryah Jakarta")
-    )
+    private lateinit var getKegiatanAdapter: GetKegiatanAdapter
+    var recentlyEventEntity: ArrayList<RecentlyEventEntity> = arrayListOf()
+    var arrayHistory: List<HistoryKegiatanEntity> = ArrayList()
+//    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+//    val current = LocalDateTime.now().format(formatter)
+
+    private val FILENAME_FORMAT = "dd-MMM-yyyy HH:mm"
+    val timeStamp: String = SimpleDateFormat(
+        FILENAME_FORMAT,
+        Locale.US
+    ).format(System.currentTimeMillis())
+
+    @Inject
+    lateinit var prefs: SharedPrefs
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-//        window?.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-//        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//        window.statusBarColor = Color.TRANSPARENT;
         window.statusBarColor = ContextCompat.getColor(this, R.color.white);
         setContentView(binding.root)
-        recentlyAdapter = RecentlyAdapter(this)
-        binding.rvRecently.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(this@SearchActivity)
-            adapter = recentlyAdapter
-        }
-        recentlyAdapter.submitList(dummyData)
 
+
+        viewModel.fetchAllKegiatan()
+        viewModelhistory.fetchSearchKegiatan(prefs.getIdMahasiswa())
+        observeHistory()
+        observe()
+        observeSetHistory()
+        setUpRecyclerView()
+        actionView()
+
+    }
+
+    private fun observeSetHistory() {
+        viewModelSetHistory.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state -> handleStateSethistory(state) }
+    }
+
+    private fun handleStateSethistory(state: SetHistoryKegiatanState) {
+        when (state) {
+            is SetHistoryKegiatanState.IsLoading -> handleLoading(state.isLoading)
+            is SetHistoryKegiatanState.Init -> Unit
+            is SetHistoryKegiatanState.SuccessSetHistory -> handleSuccessSetHistory(state.historyKegiatanEntity)
+            is SetHistoryKegiatanState.ShowToast -> showToast(state.message)
+            is SetHistoryKegiatanState.ErrorSetHistory -> handleErrorSetHistory(state.rawResponse)
+
+        }
+    }
+
+    private fun handleErrorSetHistory(rawResponse: WrappedResponse<HistoryPencarianResponse>) {
+        showToast(rawResponse.message)
+    }
+
+    private fun handleSuccessSetHistory(historyKegiatanEntity: HistoryKegiatanEntity) {
+
+    }
+
+    private fun observeHistory() {
+        observeStateHistory()
+        observeHistoryPencarian()
+
+
+    }
+
+    private fun observeHistoryPencarian() {
+        viewModelhistory.mHistory.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { history ->
+                handleHistory(history)
+            }.launchIn(lifecycleScope)
+    }
+
+
+    private fun handleHistory(history: List<HistoryKegiatanEntity>) {
+        history.forEach {
+            Log.d("handleHistorya: ", arrayHistory.size.toString())
+            if (arrayHistory.isEmpty()) {
+                arrayHistory = history
+//                arrayHistory.takeLast(3)
+                for (item in arrayHistory.take(3)) {
+                    Log.d("handleHistory: ", item.judul)
+                    binding!!.chipHistory.addView(createTagChip(this, item))
+
+                }
+            }
+        }
+    }
+
+    private fun observeStateHistory() {
+        viewModelhistory.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { state ->
+                handleStateHistory(state)
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun handleStateHistory(state: SearchKegiatanState) {
+        when (state) {
+            is SearchKegiatanState.IsLoading -> handleLoading(state.isLoading)
+            is SearchKegiatanState.ShowToast -> showToast(state.message)
+            is SearchKegiatanState.Init -> Unit
+        }
+    }
+
+    private fun actionView() {
         binding.imgBack.setOnClickListener {
             finish()
         }
-        binding.imgClearSearch.setOnClickListener {
-            binding.edtSearch.text?.clear()
-        }
 
-        setChip()
+        binding.searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+//                getKegiatanAdapter.filter.filter(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                getKegiatanAdapter.filter.filter(newText)
+                Log.d("onQueryTextSubmit2: ", newText!!)
+                return false
+            }
+
+        })
+
     }
 
-    private fun createTagChip(context: Context, chipName: String): Chip {
+    private fun observe() {
+        observeState()
+        observeKegiatan()
+    }
+
+    private fun observeKegiatan() {
+        viewModel.mKegiatan.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED)
+            .onEach { kegiatan ->
+                handleKegiatan(kegiatan)
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun handleKegiatan(kegiatan: List<KegiatanEntity>) {
+        binding.rvRecently.adapter.let {
+            if (it is GetKegiatanAdapter) {
+                viewModel.fetchAllKegiatan()
+                it.setData(kegiatan)
+            }
+        }
+    }
+
+    private fun observeState() {
+        viewModel.mState.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach { state ->
+            handleState(state)
+        }.launchIn(lifecycleScope)
+    }
+
+    private fun handleState(state: KegiatanState) {
+        when (state) {
+            is KegiatanState.IsLoading -> handleLoading(state.isLoading)
+            is KegiatanState.ShowToast -> showToast(state.message)
+            is KegiatanState.Init -> Unit
+        }
+    }
+
+    private fun handleLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.loadingProgressBar.visible()
+        } else {
+            binding.loadingProgressBar.gone()
+        }
+    }
+
+    private fun setUpRecyclerView() {
+        getKegiatanAdapter = GetKegiatanAdapter(this, mutableListOf())
+        getKegiatanAdapter.setItemTapListener(object : GetKegiatanAdapter.OnItemTap {
+            override fun onTap(kegiatans: KegiatanEntity) {
+
+                val b = bundleOf("nama_kegiatan" to kegiatans.nama_kegiatan)
+                recentlyEventEntity.add(RecentlyEventEntity(kegiatans.nama_kegiatan))
+                viewModelSetHistory.setHistory(
+                    HistoryKegiatanRequest(
+                        kegiatans.nama_kegiatan,
+                        prefs.getIdMahasiswa()
+                    )
+                )
+            }
+
+        })
+        binding.rvRecently.apply {
+            binding.rvRecently.visible()
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            setHasFixedSize(true)
+            adapter = getKegiatanAdapter
+        }
+    }
+
+    private fun createTagChip(context: Context, chipName: HistoryKegiatanEntity): Chip {
         return Chip(context).apply {
-            text = chipName
+            text = chipName.judul
             setChipBackgroundColorResource(R.color.color_grey_light)
             setTextColor(ContextCompat.getColor(context, R.color.relative))
-        }
-
-    }
-
-    private fun setChip() {
-        val array = arrayListOf("richeese factory", "mcdonals", "all you can eat", "homestay", "hotel")
-        array.forEach {
-            binding.chipHistory.addView(createTagChip(this, it))
         }
     }
 }

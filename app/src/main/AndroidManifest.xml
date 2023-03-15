@@ -6,10 +6,10 @@
 
     <uses-feature android:name="android.hardware.camera" />
 
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".presentation.App"
@@ -24,9 +24,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.dashboard.kegiatan.KegiatanActivity"
+            android:exported="false"
+            android:theme="@style/Theme.OrganisasiMahasiswa.NoActionBar"/>
+        <activity
             android:name=".presentation.dashboard.jenisKegiatan.ShowImageActivity"
-            android:theme="@style/Theme.OrganisasiMahasiswa.NoActionBar"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.OrganisasiMahasiswa.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -37,30 +41,26 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-        <!-- [START firebase_service] -->
+        </activity> <!-- [START firebase_service] -->
         <service
             android:name=".presentation.notification.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
-        <!-- [END firebase_service] -->
-
-<!--        <meta-data-->
-<!--            android:name="com.google.firebase.messaging.default_notification_channel_id"-->
-<!--            android:value="@string/default_notification_channel_id" />-->
-<!--        -->
+        </service> <!-- [END firebase_service] -->
+        <!-- <meta-data -->
+        <!-- android:name="com.google.firebase.messaging.default_notification_channel_id" -->
+        <!-- android:value="@string/default_notification_channel_id" /> -->
+        <!--  -->
         <activity
             android:name=".presentation.dashboard.search.SearchActivity"
-            android:theme="@style/Theme.OrganisasiMahasiswa.NoActionBar"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.OrganisasiMahasiswa.NoActionBar">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".presentation.register.RegisterActivity"
             android:exported="false"
