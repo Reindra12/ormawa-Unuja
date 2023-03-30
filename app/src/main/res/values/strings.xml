@@ -51,9 +51,15 @@
     <string name="message_subscribe_failed">Failed to subscribe to topic</string>
     <string name="nama_kegiatan">Ormawa</string>
     <string name="deskripsi_kegiatan">diskripsi</string>
-    <string name="tempat_kegiatan">Paiton</string>
+    <string name="tempat_kegiatan">Gedung A Lantai 3 Ruangan 1</string>
     <string name="hint_login_username_edit_text">Username</string>
     <string name="belummemiliki">Apakah anda belum memiliki akun?</string>
     <string name="daftar">Daftar</string>
     <string name="daftarkegiatan">Daftar Kegiatan</string>
+    <string name="judulkegiatan">Seminar</string>
+    <string name="harikegiatan">Sabtu</string>
+    <string name="tgl_kegiatan">18-Maret-2023</string>
+    <string name="batalikut">Batal Daftar</string>
+    <string name="diskripsi">Organisasi kemahasiswaan merupakan wadah bagi mahasiswa untuk mengembangkan kapasitas kemahasiswaannya berupa aspirasi, inisiasi, atau gagasan-gagasan positif dan kreatif melalui berbagai kwgiatan yang relafan dengan tujuan pendidikan nasional serta visi dan misi institut perguruan tinggi itu sendiri yang bekerja</string>
+    <string name="ikutikegiatan">Ikuti Kegiatan</string>
 </resources>

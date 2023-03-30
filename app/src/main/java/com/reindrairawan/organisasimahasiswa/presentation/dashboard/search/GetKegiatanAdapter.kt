@@ -60,6 +60,7 @@ class GetKegiatanAdapter(
             itemBinding.jamKegiatanTv.text = kegiatans.jam_kegiatan
             itemBinding.tglKegiatanTv.text = kegiatans.tgl_kegiatan
             itemBinding.tempatKegiatanTv.text = kegiatans.tempat
+            itemBinding.hariKegiatanTv.text = kegiatans.hari
 
             itemBinding.root.setOnClickListener {
                 onTapListener?.onTap(kegiatans)

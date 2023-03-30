@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.reindrairawan.organisasimahasiswa.R
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.core.content.contentValuesOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -16,10 +17,12 @@ import com.reindrairawan.organisasimahasiswa.domain.kegiatan.entity.KegiatanEnti
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.gone
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.showToast
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.visible
+import com.reindrairawan.organisasimahasiswa.presentation.dashboard.kegiatan.DetailKegiatan.DetailKegiatanActivity
 import com.reindrairawan.organisasimahasiswa.presentation.dashboard.search.GetKegiatanAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.checkerframework.common.returnsreceiver.qual.This
 
 @AndroidEntryPoint
 class KegiatanActivity : AppCompatActivity() {
@@ -42,6 +45,7 @@ class KegiatanActivity : AppCompatActivity() {
         val bundle: Bundle? = intent.extras
         idJenisKegiatan = bundle?.get("id") as Int
 
+        actionView()
         observeKegiatan()
         setRecyclerview()
     }
@@ -51,11 +55,19 @@ class KegiatanActivity : AppCompatActivity() {
         kegiatanAdapter = GetKegiatanAdapter(this, mutableListOf())
         kegiatanAdapter.setItemTapListener(object : GetKegiatanAdapter.OnItemTap {
             override fun onTap(kegiatans: KegiatanEntity) {
+                val b = contentValuesOf("id" to kegiatans.id)
+                val intent = Intent(this@KegiatanActivity, DetailKegiatanActivity::class.java)
+                intent.putExtra("id", kegiatans.id)
+                startActivity(intent)
+
+
                 Toast.makeText(
                     this@KegiatanActivity,
-                    "" + kegiatans.gambar_kegiatan,
+                    "" + b,
                     Toast.LENGTH_SHORT
                 ).show()
+
+
             }
         })
 
@@ -110,5 +122,12 @@ class KegiatanActivity : AppCompatActivity() {
             binding.loadingProgressBar.gone()
 
         }
+    }
+
+    private fun actionView() {
+        binding.imgBack.setOnClickListener {
+            finish()
+        }
+
     }
 }

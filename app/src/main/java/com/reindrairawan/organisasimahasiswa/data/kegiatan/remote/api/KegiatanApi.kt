@@ -2,9 +2,7 @@ package com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.api
 
 import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedListResponse
 import com.reindrairawan.organisasimahasiswa.data.common.utils.WrappedResponse
-import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.HistoryKegiatanRequest
-import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.HistoryPencarianResponse
-import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.KegiatanResponse
+import com.reindrairawan.organisasimahasiswa.data.kegiatan.remote.dto.*
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -24,4 +22,10 @@ interface KegiatanApi {
 
     @GET("kegiatan")
     suspend fun getKegiatan(): Response<WrappedListResponse<KegiatanResponse>>
+
+    @GET("kegiatan/{id}")
+    suspend fun detailKegiatan (@Path("id") id : Int): Response<WrappedResponse<KegiatanResponse>>
+
+    @POST("detail_kegiatan")
+    suspend fun daftarkegiatan(@Body daftarKegiatanRequest:DaftarKegiatanRequest) : Response<WrappedResponse<DaftarKegiatanResponse>>
 }
