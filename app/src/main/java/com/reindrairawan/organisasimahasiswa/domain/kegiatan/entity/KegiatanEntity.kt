@@ -7,6 +7,7 @@ data class KegiatanEntity(
     var gambar_kegiatan: String,
     val tgl_kegiatan: String,
     val jam_kegiatan: String,
-    val tempat: String
+    val tempat: String,
+    val hari : String
 
     )

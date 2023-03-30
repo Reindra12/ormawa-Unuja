@@ -20,8 +20,8 @@ plugins {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField 'String', 'API_BASE_URL', '"http://192.168.1.22:8000/api/"'
-        buildConfigField 'String', 'BASE_ASSETS', '"http://192.168.1.22:8000/assets/images/"'
+        buildConfigField 'String', 'API_BASE_URL', '"http://192.168.1.5:8000/api/"'
+        buildConfigField 'String', 'BASE_ASSETS', '"http://192.168.1.5:8000/assets/images/"'
 
         vectorDrawables {
             useSupportLibrary true
