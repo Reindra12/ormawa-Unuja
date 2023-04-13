@@ -31,4 +31,11 @@
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
 
+
+    <fragment
+        android:id="@+id/item_scan"
+        android:name="com.reindrairawan.organisasimahasiswa.presentation.scanner.ScanFragment"
+        android:label="fragment_scanner"
+        tools:layout="@layout/fragment_scan" />
+
 </navigation>
