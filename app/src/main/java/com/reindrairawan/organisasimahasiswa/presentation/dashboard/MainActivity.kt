@@ -1,38 +1,28 @@
 package com.reindrairawan.organisasimahasiswa.presentation.dashboard
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.view.View
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.runtime.mutableStateOf
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.inappmessaging.internal.Logging.TAG
-import com.google.firebase.messaging.FirebaseMessaging
+import com.budiyev.android.codescanner.AutoFocusMode
+import com.budiyev.android.codescanner.CodeScanner
+import com.budiyev.android.codescanner.CodeScannerView
+import com.budiyev.android.codescanner.DecodeCallback
+import com.budiyev.android.codescanner.ErrorCallback
+import com.budiyev.android.codescanner.ScanMode
 import com.reindrairawan.organisasimahasiswa.R
-import com.reindrairawan.organisasimahasiswa.data.account.remote.dto.UpdateTokenRequest
 
 import com.reindrairawan.organisasimahasiswa.databinding.ActivityMainBinding
-import com.reindrairawan.organisasimahasiswa.infra.utils.SharedPrefs
 import com.reindrairawan.organisasimahasiswa.presentation.common.extension.*
-import com.reindrairawan.organisasimahasiswa.presentation.dashboard.account.AccountViewModel
-import com.reindrairawan.organisasimahasiswa.presentation.dashboard.account.AccountViewModelState
+import com.reindrairawan.organisasimahasiswa.presentation.scanner.ScanFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -41,11 +31,18 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
+    private lateinit var codeScanner: CodeScanner
+    private var doubleBackToExitPressedOnce = false
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)
+        val scannerView = findViewById<CodeScannerView>(R.id.scanner_view)
+        codeScanner = CodeScanner(this, scannerView)
+
+        openScanning()
 
         val hostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
@@ -53,8 +50,57 @@ class MainActivity : AppCompatActivity() {
         val navView = binding.bottomNavView
         navView.setupWithNavController(navController)
 
+        binding.scanFloat.setOnClickListener {
+            codeScanner.startPreview()
+            scanner(true)
+        }
+
     }
 
+    private fun openScanning() {
+        codeScanner.camera = CodeScanner.CAMERA_BACK // or CAMERA_FRONT or specific camera id
+        codeScanner.formats = CodeScanner.ALL_FORMATS // list of type BarcodeFormat,
+        // ex. listOf(BarcodeFormat.QR_CODE)
+        codeScanner.autoFocusMode = AutoFocusMode.SAFE // or CONTINUOUS
+        codeScanner.scanMode = ScanMode.SINGLE // or CONTINUOUS or PREVIEW
+        codeScanner.isAutoFocusEnabled = true // Whether to enable auto focus or not
+        codeScanner.isFlashEnabled = false // Whether to enable flash or not
 
+        codeScanner.decodeCallback = DecodeCallback {
+            runOnUiThread {
+                scanner(false)
+                codeScanner.stopPreview()
+                showToast("hasil scan :" + it.text)
+            }
+        }
+        codeScanner.errorCallback = ErrorCallback { // or ErrorCallback.SUPPRESS
+            runOnUiThread {
+                showToast("camera error : "+it.message.toString())
+            }
+        }
+    }
+
+    private fun scanner(status: Boolean) {
+        if (status) {
+            binding.scannerView.visibility = View.VISIBLE
+            binding.coordinator.visibility = View.GONE
+        } else {
+            binding.scannerView.visibility = View.GONE
+            binding.coordinator.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed()
+            return
+        }
+        binding.scannerView.gone()
+        binding.coordinator.visible()
+
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "Tekan kembali sekali lagi untuk keluar", Toast.LENGTH_SHORT).show()
+        Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
+    }
 }
 
